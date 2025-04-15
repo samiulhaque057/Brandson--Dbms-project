@@ -52,7 +52,7 @@
 
     <div class="container-fluid px-5 d-flex justify-content-between align-items-center">
         <!-- Logo on the left -->
-        <a class="navbar-brand d-flex align-items-center" href="index.html">
+        <a class="navbar-brand d-flex align-items-center" href="index.php">
             <img src="assets/img/logo.png" alt="Brandson Logo" style="width: 50px; height: auto;" class="me-2"/>
             <span>Brandson</span>
         </a>
@@ -93,7 +93,7 @@
                 <div class="col-lg-6 order-lg-1">
                     <div class="p-5">
                         <h2 class="display-5">Trusted Meat Quality Management</h2>
-<p>Brandson Moto ensures consistent quality across your beef, lamb, and chicken inventory. Track sourcing, processing, and handling to deliver meat your customers can trust.</p>
+<p>Brandson ensures consistent quality across your beef, lamb, and chicken inventory. Track sourcing, processing, and handling to deliver meat your customers can trust.</p>
 
                     </div>
                 </div>

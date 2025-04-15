@@ -12,110 +12,160 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900" rel="stylesheet">
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
-    <!-- Custom Styling -->
-    <style>
-        body {
-            background: linear-gradient(135deg, #43cea2, #185a9d);
-            background-size: 200% 200%;
-            animation: bgShift 12s ease infinite;
-            font-family: 'Nunito', sans-serif;
+
+   <!-- Navigation -->
+   <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-transparent">
+
+    <div class="container-fluid px-5 d-flex justify-content-between align-items-center">
+        <!-- Logo on the left -->
+        <a class="navbar-brand d-flex align-items-center" href="index.html">
+            <img src="assets/img/logo.png" alt="Brandson Logo" style="width: 50px; height: auto;" class="me-2"/>
+            <span>Brandson</span>
+        </a>
+
+        <!-- Toggler for mobile -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
+            aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Buttons on the right -->
+        <div class="collapse navbar-collapse justify-content-end" id="navbarResponsive">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="register.html">Sign Up</a></li>
+                <li class="nav-item"><a class="nav-link" href="login.html">Log In</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+   <!-- Custom Styling -->
+   <style>
+    body {
+        background: linear-gradient(135deg, #000000, #1a1a1a);
+        background-size: 200% 200%;
+        animation: bgShift 12s ease infinite;
+        font-family: 'Nunito', sans-serif;
+        color: #ffffff;
+    }
+
+    @keyframes bgShift {
+        0% {
+            background-position: 0% 50%;
         }
 
-        @keyframes bgShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        50% {
+            background-position: 100% 50%;
         }
 
-        .card {
-            border-radius: 1rem;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 0 20px rgba(0, 128, 0, 0.2);
-            animation: fadeInUp 1s ease;
-            color: white;
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+
+    .card {
+        border-radius: 1rem;
+        background: rgba(30, 30, 30, 0.7);
+        backdrop-filter: blur(12px);
+        box-shadow: 0 0 20px rgba(0, 255, 0, 0.1);
+        animation: fadeInUp 1s ease;
+        color: #ffffff;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        to {
+            opacity: 1;
+            transform: translateY(0);
         }
+    }
 
-        .btn-user {
-            position: relative;
-            overflow: hidden;
-            transition: 0.4s;
-            z-index: 1;
-        }
+    .btn-user {
+position: relative;
+overflow: hidden;
+z-index: 1;
+background: #0a0a0a;
+color: #38bdf8; /* Softer neon blue */
+border: 1px solid #38bdf8;
+transition: all 0.4s ease;
+font-weight: bold;
+}
 
-        .btn-user::before {
-            content: "";
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(45deg, #56ab2f, #a8e063);
-            z-index: -1;
-            transition: 0.5s ease;
-            transform: rotate(45deg);
-        }
+.btn-user::before {
+content: "";
+position: absolute;
+top: 0;
+left: -100%;
+width: 200%;
+height: 100%;
+background: linear-gradient(90deg, #0f172a, #1e3a8a, #38bdf8);
+z-index: -1;
+transition: all 0.5s ease;
+opacity: 0.4;
+}
 
-        .btn-user:hover::before {
-            top: 0;
-            left: 0;
-        }
+.btn-user:hover {
+border-color: transparent;
+/* No text color change */
+}
 
-        .form-control-user {
-            background: rgba(255, 255, 255, 0.2);
-            color: #fff;
-            border: none;
-        }
+.btn-user:hover::before {
+left: 0;
+opacity: 1;
+}
 
-        .form-control-user::placeholder {
-            color: #e0f7e9;
-        }
 
-        .form-control-user option {
-            color: black;
-        }
 
-        select.form-control-user {
-            background-color: rgba(255, 255, 255, 0.2);
-            color: #fff;
-            appearance: none;
-            border: none;
-            padding: 10px;
-        }
+    .form-control-user {
+        background: rgba(255, 255, 255, 0.05);
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
 
-        select.form-control-user option {
-            color: black; /* Options when dropdown is open */
-        }
+    .form-control-user::placeholder {
+        color: #aaa;
+    }
 
-        select.form-control-user:invalid {
-            color: #ccc; /* Placeholder-like effect for default option */
-        }
+    select.form-control-user {
+        background-color: rgba(255, 255, 255, 0.05);
+        color: #fff;
+        appearance: none;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 10px;
+    }
 
-        select.form-control-user:focus {
-            background-color: rgba(255, 255, 255, 0.3);
-            color: #fff; /* Ensure text remains visible when focused */
-        }
+    select.form-control-user option {
+        color: black;
+    }
 
-        .custom-control-label {
-            color: #e0f7e9;
-        }
+    select.form-control-user:invalid {
+        color: #888;
+    }
 
-        .text-white a {
-            color: #d2ffdb;
-        }
-    </style>
+    select.form-control-user:focus {
+        background-color: rgba(255, 255, 255, 0.1);
+        color: #fff;
+    }
+
+    .text-white a {
+        color: #8eff8b;
+    }
+
+    .text-gray-900 {
+        color: #ffffff !important;
+    }
+
+    hr {
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+</style>
 </head>
+
 
 <body>
 

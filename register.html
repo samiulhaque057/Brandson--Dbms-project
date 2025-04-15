@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Farming App - Register</title>
+
+    <!-- Custom fonts for this template-->
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+    <!-- Custom Styling -->
+    <style>
+        body {
+            background: linear-gradient(135deg, #43cea2, #185a9d);
+            background-size: 200% 200%;
+            animation: bgShift 12s ease infinite;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        @keyframes bgShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .card {
+            border-radius: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 20px rgba(0, 128, 0, 0.2);
+            animation: fadeInUp 1s ease;
+            color: white;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .btn-user {
+            position: relative;
+            overflow: hidden;
+            transition: 0.4s;
+            z-index: 1;
+        }
+
+        .btn-user::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, #56ab2f, #a8e063);
+            z-index: -1;
+            transition: 0.5s ease;
+            transform: rotate(45deg);
+        }
+
+        .btn-user:hover::before {
+            top: 0;
+            left: 0;
+        }
+
+        .form-control-user {
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border: none;
+        }
+
+        .form-control-user::placeholder {
+            color: #e0f7e9;
+        }
+
+        select.form-control-user {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            appearance: none;
+            border: none;
+            padding: 10px;
+        }
+
+        select.form-control-user option {
+            color: black; /* Options when dropdown is open */
+        }
+
+        select.form-control-user:invalid {
+            color: #ccc; /* Placeholder-like effect for default option */
+        }
+
+        select.form-control-user:focus {
+            background-color: rgba(255, 255, 255, 0.3);
+            color: #fff; /* Ensure text remains visible when focused */
+        }
+
+        .text-white a {
+            color: #d2ffdb;
+        }
+
+        .text-gray-900 {
+            color: #fff !important; /* Override default text color */
+        }
+
+        hr {
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container d-flex justify-content-center align-items-center vh-100">
+        <div class="col-lg-6 col-md-8">
+            <div class="card shadow-lg">
+                <div class="card-body p-5">
+                    <div class="text-center mb-4">
+                        <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
+                    </div>
+                    <form class="user">
+                        <div class="form-group row">
+                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                <input type="text" class="form-control form-control-user" id="exampleFirstName"
+                                    placeholder="First Name" required>
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control form-control-user" id="exampleLastName"
+                                    placeholder="Last Name" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" class="form-control form-control-user" id="exampleInputEmail"
+                                placeholder="Email Address" required>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control" name="" id="">
+                                <option value="">Select User Type</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group row">
+                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                <input type="password" class="form-control form-control-user"
+                                    id="exampleInputPassword" placeholder="Password" required>
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="password" class="form-control form-control-user"
+                                    id="exampleRepeatPassword" placeholder="Repeat Password" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success btn-user btn-block">
+                            Register Account
+                        </button>
+                        <hr>
+                        
+                    </form>
+                    <hr>
+                    <div class="text-center">
+                        <a class="small text-white" href="forgot-password.html">Forgot Password?</a>
+                    </div>
+                    <div class="text-center">
+                        <a class="small text-white" href="login.html">Already have an account? Login!</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
+
+    <!-- Form handler -->
+    <script>
+        document.querySelector(".user").addEventListener("submit", function (e) {
+            e.preventDefault();
+            const firstName = document.getElementById("exampleFirstName").value;
+            const lastName = document.getElementById("exampleLastName").value;
+            const email = document.getElementById("exampleInputEmail").value;
+            const userType = document.getElementById("userType").value;
+            const password = document.getElementById("exampleInputPassword").value;
+            const repeatPassword = document.getElementById("exampleRepeatPassword").value;
+
+            console.log("Register submitted:", { firstName, lastName, email, userType, password, repeatPassword });
+
+            // Logic to handle form submission goes here
+        });
+
+        // Ensure the select element shows the selected option and defaults to placeholder
+        const userTypeSelect = document.getElementById("userType");
+        userTypeSelect.style.color = "#ccc";
+        userTypeSelect.addEventListener("change", function () {
+            if (this.value) {
+                this.style.color = "#fff"; // Visible text for valid selection
+            } else {
+                this.style.color = "#ccc"; // Placeholder color for default
+            }
+        });
+    </script>
+
+</body>
+
+</html>

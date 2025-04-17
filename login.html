@@ -7,165 +7,170 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Farming App - Login</title>
 
+      <!-- Navigation -->
+      <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-transparent">
+        <div class="container-fluid px-5 d-flex justify-content-between align-items-center">
+            <!-- Logo on the left -->
+            <a class="navbar-brand d-flex align-items-center" href="index.php">
+                <img src="assets/img/logo.png" alt="Brandson Logo" style="width: 50px; height: auto;" class="me-2"/>
+                <span>Brandson</span>
+            </a>
+
+            <!-- Toggler for mobile -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Buttons on the right -->
+            <div class="collapse navbar-collapse justify-content-end" id="navbarResponsive">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="register.html">Sign Up</a></li>
+                    <li class="nav-item"><a class="nav-link" href="login.html">Log In</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
     <!-- Fonts and Icons -->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,300,400,600,700,800,900" rel="stylesheet">
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
-
-   <!-- Navigation -->
-   <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-transparent">
-
-    <div class="container-fluid px-5 d-flex justify-content-between align-items-center">
-        <!-- Logo on the left -->
-        <a class="navbar-brand d-flex align-items-center" href="index.php">
-            <img src="assets/img/logo.png" alt="Brandson Logo" style="width: 50px; height: auto;" class="me-2"/>
-            <span>Brandson</span>
-        </a>
-
-        <!-- Toggler for mobile -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
-            aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <!-- Buttons on the right -->
-        <div class="collapse navbar-collapse justify-content-end" id="navbarResponsive">
-            <ul class="navbar-nav">
-                <li class="nav-item"><a class="nav-link" href="register.html">Sign Up</a></li>
-                <li class="nav-item"><a class="nav-link" href="login.html">Log In</a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
-
-
-   <!-- Custom Styling -->
-   <style>
-    body {
-        background: linear-gradient(135deg, #000000, #1a1a1a);
-        background-size: 200% 200%;
-        animation: bgShift 12s ease infinite;
-        font-family: 'Nunito', sans-serif;
-        color: #ffffff;
-    }
-
-    @keyframes bgShift {
-        0% {
-            background-position: 0% 50%;
+    <!-- Custom Styling -->
+    <style>
+        body {
+            background: linear-gradient(135deg, #000000, #1a1a1a);
+            background-size: 200% 200%;
+            animation: bgShift 12s ease infinite;
+            font-family: 'Nunito', sans-serif;
+            color: #ffffff;
         }
 
-        50% {
-            background-position: 100% 50%;
+        @keyframes bgShift {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
         }
 
-        100% {
-            background-position: 0% 50%;
-        }
-    }
-
-    .card {
-        border-radius: 1rem;
-        background: rgba(30, 30, 30, 0.7);
-        backdrop-filter: blur(12px);
-        box-shadow: 0 0 20px rgba(0, 255, 0, 0.1);
-        animation: fadeInUp 1s ease;
-        color: #ffffff;
-    }
-
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
+        .card {
+            border-radius: 1rem;
+            background: rgba(30, 30, 30, 0.7);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.1);
+            animation: fadeInUp 1s ease;
+            color: #ffffff;
         }
 
-        to {
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .btn-user {
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            background: #0a0a0a;
+            color: #38bdf8;
+            border: 1px solid #38bdf8;
+            transition: all 0.4s ease;
+            font-weight: bold;
+        }
+
+        .btn-user::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(90deg, #0f172a, #1e3a8a, #38bdf8);
+            z-index: -1;
+            transition: all 0.5s ease;
+            opacity: 0.4;
+        }
+
+        .btn-user:hover {
+            border-color: transparent;
+        }
+
+        .btn-user:hover::before {
+            left: 0;
             opacity: 1;
-            transform: translateY(0);
         }
-    }
 
-    .btn-user {
-position: relative;
-overflow: hidden;
-z-index: 1;
-background: #0a0a0a;
-color: #38bdf8; /* Softer neon blue */
-border: 1px solid #38bdf8;
-transition: all 0.4s ease;
-font-weight: bold;
-}
+        .form-control-user {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
-.btn-user::before {
-content: "";
-position: absolute;
-top: 0;
-left: -100%;
-width: 200%;
-height: 100%;
-background: linear-gradient(90deg, #0f172a, #1e3a8a, #38bdf8);
-z-index: -1;
-transition: all 0.5s ease;
-opacity: 0.4;
-}
+        .form-control-user::placeholder {
+            color: #aaa;
+        }
 
-.btn-user:hover {
-border-color: transparent;
-/* No text color change */
-}
+        select.form-control-user {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            appearance: none;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 10px;
+        }
 
-.btn-user:hover::before {
-left: 0;
-opacity: 1;
-}
+        select.form-control-user option {
+            color: black;
+        }
 
+        select.form-control-user:focus {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+        }
 
+        .text-white a {
+            color: #8eff8b;
+        }
 
-    .form-control-user {
-        background: rgba(255, 255, 255, 0.05);
-        color: #fff;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-    }
+        .text-gray-900 {
+            color: #ffffff !important;
+        }
 
-    .form-control-user::placeholder {
-        color: #aaa;
-    }
+        hr {
+            border-color: rgba(255, 255, 255, 0.1);
+        }
 
-    select.form-control-user {
-        background-color: rgba(255, 255, 255, 0.05);
-        color: #fff;
-        appearance: none;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 10px;
-    }
-
-    select.form-control-user option {
-        color: black;
-    }
-
-    select.form-control-user:invalid {
-        color: #888;
-    }
-
-    select.form-control-user:focus {
-        background-color: rgba(255, 255, 255, 0.1);
-        color: #fff;
-    }
-
-    .text-white a {
-        color: #8eff8b;
-    }
-
-    .text-gray-900 {
-        color: #ffffff !important;
-    }
-
-    hr {
-        border-color: rgba(255, 255, 255, 0.1);
-    }
-</style>
+        /* Error message styling */
+        .error-message {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 0, 0, 0.9);
+            color: #fff;
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.4);
+            z-index: 9999;
+            min-width: 300px;
+            text-align: center;
+        }
+    </style>
 </head>
-
 
 <body>
 
@@ -174,24 +179,24 @@ opacity: 1;
             <div class="card shadow-lg">
                 <div class="card-body p-5">
                     <div class="text-center mb-4">
-                        <h1 class="h4">Welcome to Farming App</h1>
+                        <h1 class="h4">Sign In</h1>
                     </div>
-                    <form class="user">
+                    <form class="user" action="login.php" method="POST">
                         <div class="form-group">
-                            <input type="email" class="form-control form-control-user"
-                                id="exampleInputEmail" placeholder="Enter Email Address..." required>
+                            <input type="email" name="email" class="form-control form-control-user"
+                                placeholder="Enter Email Address..." required>
                         </div>
                         <div class="form-group">
-                            <input type="password" class="form-control form-control-user"
-                                id="exampleInputPassword" placeholder="Password" required>
+                            <input type="password" name="password" class="form-control form-control-user"
+                                placeholder="Password" required>
                         </div>
                         <div class="form-group">
-                            <select class="form-control" name="" id="">
+                            <select class="form-control" name="user_type" required>
                                 <option value="">Select User Type</option>
                                 <option value="admin">Admin</option>
+                                <option value="user">User</option>
                             </select>
                         </div>
-                        
                         <div class="form-group">
                             <div class="custom-control custom-checkbox small">
                                 <input type="checkbox" class="custom-control-input" id="customCheck">
@@ -202,7 +207,6 @@ opacity: 1;
                             Login
                         </button>
                         <hr>
-                        
                     </form>
                     <hr>
                     <div class="text-center">
@@ -222,31 +226,79 @@ opacity: 1;
     <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
     <script src="js/sb-admin-2.min.js"></script>
 
-    <!-- Form handler -->
+    <!-- Form Validation and Error Handling -->
     <script>
-        document.querySelector(".user").addEventListener("submit", function (e) {
-            e.preventDefault();
-            const userType = document.getElementById("userType").value;
-            const email = document.getElementById("exampleInputEmail").value;
-            const password = document.getElementById("exampleInputPassword").value;
+        // Add form validation and error display
+        const form = document.querySelector("form");
 
-            console.log("Login submitted:", { userType, email, password });
+        form.addEventListener("submit", function(event) {
+            let valid = true;
 
-            // Logic to handle form submission goes here
-        });
+            // Check if the user type is selected
+            const userType = document.querySelector('select[name="user_type"]').value;
+            if (userType === "") {
+                valid = false;
+                const errorMessage = document.createElement('div');
+                errorMessage.classList.add('error-message');
+                errorMessage.innerHTML = "Please select a user type!";
+                document.body.appendChild(errorMessage);
 
-        // Ensure the select element shows the selected option and defaults to placeholder
-        const userTypeSelect = document.getElementById("userType");
-        // Set initial color for placeholder
-        userTypeSelect.style.color = "#ccc";
-        userTypeSelect.addEventListener("change", function () {
-            if (this.value) {
-                this.style.color = "#fff"; // Visible text for valid selection
-            } else {
-                this.style.color = "#ccc"; // Placeholder color for default
+                // Show the error message
+                errorMessage.style.display = 'block';
+
+                // Fade out and remove after 5 seconds
+                setTimeout(() => {
+                    errorMessage.style.opacity = '0';
+                    setTimeout(() => errorMessage.remove(), 500);
+                }, 5000);
+            }
+
+            // If the form is invalid, prevent submission
+            if (!valid) {
+                event.preventDefault();
             }
         });
     </script>
+
+
+<script>
+    // Check if there's any error or success message in the URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const error = urlParams.get('error');
+    const success = urlParams.get('success');
+
+    if (error || success) {
+        const alertBox = document.createElement("div");
+        alertBox.className = `${error ? "alert-danger" : "alert-success"}`;
+        alertBox.style.position = "fixed";
+        alertBox.style.bottom = "30px";
+        alertBox.style.left = "50%";
+        alertBox.style.transform = "translateX(-50%)";
+        alertBox.style.zIndex = "9999";
+        alertBox.style.padding = "16px 28px";
+        alertBox.style.borderRadius = "12px";
+        alertBox.style.backdropFilter = "blur(10px)";
+        alertBox.style.background = error 
+            ? "rgba(255, 75, 75, 0.15)" 
+            : "rgba(50, 255, 100, 0.15)";
+        alertBox.style.border = error 
+            ? "1px solid rgba(255, 75, 75, 0.6)" 
+            : "1px solid rgba(50, 255, 100, 0.6)";
+        alertBox.style.color = "#fff";
+        alertBox.style.fontWeight = "600";
+        alertBox.style.boxShadow = "0 8px 20px rgba(0,0,0,0.2)";
+        alertBox.style.transition = "opacity 0.5s ease";
+        alertBox.innerText = decodeURIComponent(error || success);
+
+        document.body.appendChild(alertBox);
+
+        setTimeout(() => {
+            alertBox.style.opacity = "0";
+            setTimeout(() => alertBox.remove(), 500);
+        }, 8000); // 8 seconds
+    }
+</script>
+
 
 </body>
 

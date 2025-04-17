@@ -12,66 +12,59 @@
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
-     <!-- Navigation -->
-     <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-transparent">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-transparent">
+        <div class="container-fluid px-5 d-flex justify-content-between align-items-center">
+            <!-- Logo on the left -->
+            <a class="navbar-brand d-flex align-items-center" href="index.php">
+                <img src="assets/img/logo.png" alt="Brandson Logo" style="width: 50px; height: auto;" class="me-2"/>
+                <span>Brandson</span>
+            </a>
 
-    <div class="container-fluid px-5 d-flex justify-content-between align-items-center">
-        <!-- Logo on the left -->
-        <a class="navbar-brand d-flex align-items-center" href="index.php">
-            <img src="assets/img/logo.png" alt="Brandson Logo" style="width: 50px; height: auto;" class="me-2"/>
-            <span>Brandson</span>
-        </a>
+            <!-- Toggler for mobile -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-        <!-- Toggler for mobile -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
-            aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <!-- Buttons on the right -->
-        <div class="collapse navbar-collapse justify-content-end" id="navbarResponsive">
-            <ul class="navbar-nav">
-                <li class="nav-item"><a class="nav-link" href="register.html">Sign Up</a></li>
-                <li class="nav-item"><a class="nav-link" href="login.html">Log In</a></li>
-            </ul>
+            <!-- Buttons on the right -->
+            <div class="collapse navbar-collapse justify-content-end" id="navbarResponsive">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="register.html">Sign Up</a></li>
+                    <li class="nav-item"><a class="nav-link" href="login.html">Log In</a></li>
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
-
+    </nav>
 
     <!-- Custom Styling -->
     <style>
-       body {
-    background: linear-gradient(160deg, #000000 0%, #0d0d0d 50%, #1a1a1a 100%), 
-                radial-gradient(circle at top left, rgba(255,255,255,0.05), transparent 70%),
-                radial-gradient(circle at bottom right, rgba(0,255,255,0.03), transparent 70%);
-    background-blend-mode: overlay;
-    background-size: 400% 400%;
-    animation: bgFlow 20s ease infinite;
-    font-family: 'Nunito', sans-serif;
-    color: #ffffff;
-}
+        body {
+            background: linear-gradient(160deg, #000000 0%, #0d0d0d 50%, #1a1a1a 100%), 
+                        radial-gradient(circle at top left, rgba(255,255,255,0.05), transparent 70%),
+                        radial-gradient(circle at bottom right, rgba(0,255,255,0.03), transparent 70%);
+            background-blend-mode: overlay;
+            background-size: 400% 400%;
+            animation: bgFlow 20s ease infinite;
+            font-family: 'Nunito', sans-serif;
+            color: #ffffff;
+        }
 
-@keyframes bgFlow {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}
-
-     
+        @keyframes bgFlow {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
 
         .card {
             border-radius: 1rem;
@@ -87,7 +80,6 @@
                 opacity: 0;
                 transform: translateY(20px);
             }
-
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -95,40 +87,38 @@
         }
 
         .btn-user {
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
-    background: #0a0a0a;
-    color: #38bdf8; /* Softer neon blue */
-    border: 1px solid #38bdf8;
-    transition: all 0.4s ease;
-    font-weight: bold;
-}
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            background: #0a0a0a;
+            color: #38bdf8; /* Softer neon blue */
+            border: 1px solid #38bdf8;
+            transition: all 0.4s ease;
+            font-weight: bold;
+        }
 
-.btn-user::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 200%;
-    height: 100%;
-    background: linear-gradient(90deg, #0f172a, #1e3a8a, #38bdf8);
-    z-index: -1;
-    transition: all 0.5s ease;
-    opacity: 0.4;
-}
+        .btn-user::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(90deg, #0f172a, #1e3a8a, #38bdf8);
+            z-index: -1;
+            transition: all 0.5s ease;
+            opacity: 0.4;
+        }
 
-.btn-user:hover {
-    border-color: transparent;
-    /* No text color change */
-}
+        .btn-user:hover {
+            border-color: transparent;
+            /* No text color change */
+        }
 
-.btn-user:hover::before {
-    left: 0;
-    opacity: 1;
-}
-
-
+        .btn-user:hover::before {
+            left: 0;
+            opacity: 1;
+        }
 
         .form-control-user {
             background: rgba(255, 255, 255, 0.05);
@@ -175,6 +165,55 @@
     </style>
 </head>
 
+
+
+<script>
+    function getQueryParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
+    }
+
+    const error = getQueryParam("error");
+    const success = getQueryParam("success");
+
+    if (error || success) {
+        const alertBox = document.createElement("div");
+        alertBox.className = `${error ? "alert-danger" : "alert-success"}`;
+        alertBox.style.position = "fixed";
+        alertBox.style.bottom = "30px";
+        alertBox.style.left = "50%";
+        alertBox.style.transform = "translateX(-50%)";
+        alertBox.style.zIndex = "9999";
+        alertBox.style.padding = "16px 28px";
+        alertBox.style.borderRadius = "12px";
+        alertBox.style.backdropFilter = "blur(10px)";
+        alertBox.style.background = error 
+            ? "rgba(255, 75, 75, 0.15)" 
+            : "rgba(50, 255, 100, 0.15)";
+        alertBox.style.border = error 
+            ? "1px solid rgba(255, 75, 75, 0.6)" 
+            : "1px solid rgba(50, 255, 100, 0.6)";
+        alertBox.style.color = "#fff";
+        alertBox.style.fontWeight = "600";
+        alertBox.style.boxShadow = "0 8px 20px rgba(0,0,0,0.2)";
+        alertBox.style.transition = "opacity 0.5s ease";
+        alertBox.innerText = decodeURIComponent(error || success);
+
+        document.body.appendChild(alertBox);
+
+        setTimeout(() => {
+            alertBox.style.opacity = "0";
+            setTimeout(() => alertBox.remove(), 500);
+        }, 8000); // 8 seconds
+    }
+</script>
+
+
+
+
+
+
+
 <body>
 
     <div class="container d-flex justify-content-center align-items-center vh-100">
@@ -185,44 +224,37 @@
                         <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
                     </div>
 
-                    <form action=" register.php" method = "post">
-                        <form class="user">
-                            <div class="form-group row">
-                                <div class="col-sm-6 mb-3 mb-sm-0">
-                                    <input type="text" class="form-control form-control-user" id="exampleFirstName"
-                                        placeholder="First Name" required>
-                                </div>
-                                <div class="col-sm-6">
-                                    <input type="text" class="form-control form-control-user" id="exampleLastName"
-                                        placeholder="Last Name" required>
-                                </div>
+                    <!-- Form Action Points to register.php -->
+                    <form action="register.php" method="POST" class="user">
+                        <div class="form-group row">
+                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                <input type="text" class="form-control form-control-user" name="first_name" placeholder="First Name" required>
                             </div>
-                            <div class="form-group">
-                                <input type="email" class="form-control form-control-user" id="exampleInputEmail"
-                                    placeholder="Email Address" required>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control form-control-user" name="last_name" placeholder="Last Name" required>
                             </div>
-                            <div class="form-group">
-                                <select class="form-control" name="" id="">
-                                    <option value="">Select User Type</option>
-                                    <option value="admin">Admin</option>
-                                </select>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" class="form-control form-control-user" name="email" placeholder="Email Address" required>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control" name="user_type" required>
+                                <option value="">Select User Type</option>
+                                <option value="admin">Admin</option>
+                                <option value="user">User</option>
+                            </select>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                <input type="password" class="form-control form-control-user" name="password" placeholder="Password" required>
                             </div>
-                            <div class="form-group row">
-                                <div class="col-sm-6 mb-3 mb-sm-0">
-                                    <input type="password" class="form-control form-control-user" id="exampleInputPassword"
-                                        placeholder="Password" required>
-                                </div>
-                                <div class="col-sm-6">
-                                    <input type="password" class="form-control form-control-user"
-                                        id="exampleRepeatPassword" placeholder="Repeat Password" required>
-                                </div>
+                            <div class="col-sm-6">
+                                <input type="password" class="form-control form-control-user" name="repeat_password" placeholder="Repeat Password" required>
                             </div>
-                            <button type="submit" class="btn btn-user btn-block">
+                        </div>
+                        <button type="submit" class="btn btn-user btn-block">Register Account</button>
+                    </form>
 
-                                Register Account
-                            </button>
-                            <hr>
-                        </form>
                     <hr>
                     <div class="text-center">
                         <a class="small text-white" href="forgot-password.html">Forgot Password?</a>
@@ -245,29 +277,6 @@
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
 
-    <!-- Form handler -->
-    <script>
-        document.querySelector(".user").addEventListener("submit", function (e) {
-            e.preventDefault();
-            const firstName = document.getElementById("exampleFirstName").value;
-            const lastName = document.getElementById("exampleLastName").value;
-            const email = document.getElementById("exampleInputEmail").value;
-            const userType = document.getElementById("userType").value;
-            const password = document.getElementById("exampleInputPassword").value;
-            const repeatPassword = document.getElementById("exampleRepeatPassword").value;
-
-            console.log("Register submitted:", { firstName, lastName, email, userType, password, repeatPassword });
-
-            // Logic to handle form submission goes here
-        });
-
-        // Color logic for select
-        const userTypeSelect = document.getElementById("userType");
-        userTypeSelect.style.color = "#888";
-        userTypeSelect.addEventListener("change", function () {
-            this.style.color = this.value ? "#fff" : "#888";
-        });
-    </script>
 
 </body>
 

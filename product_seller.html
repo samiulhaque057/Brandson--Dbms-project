@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agro Farm Seller Dashboard</title>
+  <style>
+    :root {
+      --primary: #A3C4F3;
+      --secondary: #FFD6A5;
+      --danger: #FFB5A7;
+      --warning: #FFDAC1;
+      --success: #B5EAD7;
+      --accent: #FF9AA2;
+      --light-green: #C7F9CC;
+      --dark-bg: #121212;
+      --dark-card: #1e1e1e;
+      --dark-text: #e0e0e0;
+      --dark-border: #333333;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background-color: var(--dark-bg);
+      color: var(--dark-text);
+      min-height: 100vh;
+    }
+
+    .container {
+      padding: 20px;
+      max-width: 1800px;
+      margin: 0 auto;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 0;
+      border-bottom: 1px solid var(--dark-border);
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    nav {
+      display: flex;
+      gap: 25px;
+      align-items: center;
+    }
+
+    nav a {
+      color: var(--dark-text);
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    nav a:hover {
+      color: var(--primary);
+    }
+
+    .logo {
+      font-size: 26px;
+      font-weight: bold;
+      color: var(--primary);
+    }
+
+    .profile-menu, .notification-menu {
+      position: relative;
+      display: inline-block;
+    }
+
+    .profile-name, .notification-icon {
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 16px;
+      color: var(--dark-text);
+    }
+
+    .dropdown-content, .notification-dropdown {
+      display: none;
+      position: absolute;
+      top: 40px;
+      right: 0;
+      background-color: var(--dark-card);
+      min-width: 180px;
+      box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+      z-index: 1;
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--dark-border);
+    }
+
+    .dropdown-content a, .notification-dropdown p {
+      color: var(--dark-text);
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      font-size: 14px;
+    }
+
+    .dropdown-content a:hover, .notification-dropdown p:hover {
+      background-color: var(--primary);
+      color: #000;
+    }
+
+    .profile-menu:hover .dropdown-content, .notification-menu:hover .notification-dropdown {
+      display: block;
+    }
+
+    .notification-icon {
+      font-size: 20px;
+      position: relative;
+    }
+
+    .notification-badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background-color: var(--danger);
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .dashboard-title {
+      font-size: 28px;
+      margin: 20px 0 10px;
+      color: var(--primary);
+    }
+
+    .button.update-stock {
+      background-color: var(--secondary);
+      color: #000;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      background-color: var(--dark-card);
+      border-radius: 10px;
+      padding: 20px;
+      border: 4px solid var(--primary);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+
+    .card-value {
+      font-size: 28px;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+
+    .charts-wrapper {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 25px;
+      margin-bottom: 30px;
+    }
+
+    .chart-container {
+      height: 350px;
+      background-color: var(--dark-card);
+      border-radius: 10px;
+      padding: 15px;
+    }
+
+    h3 {
+      margin-bottom: 10px;
+      font-size: 22px;
+      text-align: center;
+      color: var(--primary);
+    }
+
+    canvas {
+      width: 100% !important;
+      height: 260px !important;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: var(--dark-card);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 20px;
+    }
+
+    th, td {
+      padding: 12px;
+      border: 1px solid var(--dark-border);
+      text-align: center;
+      font-size: 16px;
+    }
+
+    th {
+      background-color: var(--primary);
+      color: #000;
+    }
+  </style>
+</head>
+
+<body>
+<div class="container">
+  <header>
+    <div class="logo">Agro Farm Seller</div>
+    <nav>
+      <a href="#">Dashboard</a>
+      <a href="#">Stock</a>
+      <a href="#">Orders</a>
+      <a href="#">Suppliers</a>
+      <a href="#">Delivery</a>
+
+      <div class="notification-menu">
+        <span class="notification-icon">🔔<span class="notification-badge"></span></span>
+        <div class="notification-dropdown">
+          <p>New Order Received (ID #103)</p>
+          <p>Stock Updated: 50kg Chicken</p>
+          <p>Supplier Delivered: 100kg Beef</p>
+        </div>
+      </div>
+
+      <div class="profile-menu">
+        <span class="profile-name">👤 Profile</span>
+        <div class="dropdown-content">
+          <a href="#">Settings</a>
+          <a href="#">Change Profile Details</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <h1 class="dashboard-title">Dashboard Overview</h1>
+  <button class="button update-stock">Update Stock</button>
+
+  <div class="grid">
+    <div class="card">
+      <div class="card-header">Total Products</div>
+      <div class="card-value">150</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">Products In Stock</div>
+      <div class="card-value">1200</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">Out of Stock</div>
+      <div class="card-value">15</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">New Orders</div>
+      <div class="card-value">6</div>
+    </div>
+  </div>
+
+  <div class="charts-wrapper">
+    <div class="chart-container">
+      <h3>Loss Track</h3>
+      <canvas id="lossChart"></canvas>
+    </div>
+
+    <div class="chart-container">
+      <h3>Stock & Inventory</h3>
+      <canvas id="inventoryChart"></canvas>
+    </div>
+
+    <div class="chart-container">
+      <h3>Supplier Farm Details</h3>
+      <canvas id="supplierChart"></canvas>
+    </div>
+  </div>
+
+  <h2 class="dashboard-title">Delivery & Transportation Status</h2>
+  <table>
+    <thead>
+    <tr>
+      <th>Order ID</th>
+      <th>Product</th>
+      <th>Quantity</th>
+      <th>Status</th>
+      <th>ETA</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>#101</td>
+      <td>Chicken</td>
+      <td>50kg</td>
+      <td>Dispatched</td>
+      <td>2 Days</td>
+    </tr>
+    <tr>
+      <td>#102</td>
+      <td>Mutton</td>
+      <td>30kg</td>
+      <td>In Transit</td>
+      <td>3 Days</td>
+    </tr>
+    <tr>
+      <td>#103</td>
+      <td>Beef</td>
+      <td>45kg</td>
+      <td>Delivered</td>
+      <td>Completed</td>
+    </tr>
+    </tbody>
+  </table>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  // Loss Track Chart
+  new Chart(document.getElementById('lossChart'), {
+    type: 'line',
+    data: {
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+      datasets: [{
+        label: 'Losses (kg)',
+        data: [5, 3, 6, 2, 4, 3],
+        backgroundColor: 'rgba(255, 181, 167, 0.5)',
+        borderColor: '#FFB5A7',
+        fill: true,
+        tension: 0.4
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { labels: { color: '#e0e0e0', font: { size: 14 } } }
+      },
+      scales: {
+        x: { ticks: { color: '#e0e0e0', font: { size: 12 } } },
+        y: { ticks: { color: '#e0e0e0', font: { size: 12 } } }
+      }
+    }
+  });
+
+  // Inventory Pie Chart with pastel colors
+  new Chart(document.getElementById('inventoryChart'), {
+    type: 'pie',
+    data: {
+      labels: ['Chicken', 'Mutton', 'Beef', 'Pork', 'Fish'],
+      datasets: [{
+        data: [30, 20, 25, 15, 10],
+        backgroundColor: [
+          '#A3C4F3', // pastel blue
+          '#FFD6A5', // pastel yellow
+          '#FF9AA2', // pastel pink
+          '#B5EAD7', // pastel green
+          '#FFDAC1'  // pastel peach
+        ],
+        borderColor: '#121212',
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { labels: { color: '#e0e0e0', font: { size: 14 } } }
+      }
+    }
+  });
+
+  // Supplier Farm Bar Chart
+  new Chart(document.getElementById('supplierChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Farm A', 'Farm B', 'Farm C', 'Farm D'],
+      datasets: [{
+        label: 'Supplies Delivered (kg)',
+        data: [200, 150, 180, 120],
+        backgroundColor: '#A3C4F3',
+        borderRadius: 10,
+        barThickness: 40
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { labels: { color: '#e0e0e0', font: { size: 14 } } }
+      },
+      scales: {
+        x: { ticks: { color: '#e0e0e0', font: { size: 12 } } },
+        y: { ticks: { color: '#e0e0e0', font: { size: 12 } } }
+      }
+    }
+  });
+</script>
+
+</body>
+</html>

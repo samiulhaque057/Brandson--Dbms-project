@@ -32,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['user_type'] = $user['user_type'];
 
             // Redirect to the dashboard with a success message
-            header("Location: dashboard.html?success=" . urlencode("Login successful!"));
+            header("Location: samiul/dashboard.php?success=" . urlencode("Login successful!"));
             exit();
         } else {
             // Invalid password error message

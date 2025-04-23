@@ -69,6 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
+
 ?>
 
 <!DOCTYPE html>
@@ -278,8 +279,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                     <option value="Beef">Beef</option>
                                                     <option value="Chicken">Chicken</option>
                                                     <option value="Lamb">Lamb</option>
-                                                    <option value="Pork">Pork</option>
-                                                    <option value="Fish">Fish</option>
+                                                    
                                                 </select>
                                             </div>
 

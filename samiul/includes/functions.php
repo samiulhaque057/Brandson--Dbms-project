@@ -199,3 +199,26 @@ function redirect($location) {
     header("Location: " . URL_ROOT . '/' . $location);
     exit();
 }
+
+
+function dashboard_table(){
+
+    $sql = "SELECT * FROM stockData ORDER BY date_added DESC "; // Get the 10 most recent stock records
+    $result = $conn->query($sql);
+
+    // Check if there are any rows returned
+    if ($result->num_rows > 0) {
+        // Fetch all the results into an associative array
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row; // Add each row to the data array
+        }
+
+        // Return the data array
+        return $data;
+    } else {
+        // If no data, return an empty array
+        return [];
+    }
+
+}

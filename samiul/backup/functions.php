@@ -1,17 +1,58 @@
 <?php
 // Get inventory data
-function getInventoryData($conn) {
-    $sql = "SELECT * FROM stockData";
-    $result = $conn->query($sql);
+function getInventoryData() {
+    global $conn;
     
-    $inventoryData = [];
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $inventoryData[] = $row; // Add each row to the inventory data array
-        }
-    }
+    // In a real application, this would fetch data from the database
+    // For demonstration purposes, we'll use static data
     
-    return $inventoryData;
+    return [
+        [
+            'id' => 1,
+            'type' => 'Beef',
+            'batch' => 'B-1234',
+            'quantity' => 450,
+            'processingDate' => '2023-04-15',
+            'expirationDate' => '2023-05-15',
+            'location' => 'Cold Storage A',
+        ],
+        [
+            'id' => 2,
+            'type' => 'Chicken',
+            'batch' => 'C-5678',
+            'quantity' => 320,
+            'processingDate' => '2023-04-16',
+            'expirationDate' => '2023-05-01',
+            'location' => 'Cold Storage B',
+        ],
+        [
+            'id' => 3,
+            'type' => 'Lamb',
+            'batch' => 'L-9012',
+            'quantity' => 180,
+            'processingDate' => '2023-04-14',
+            'expirationDate' => '2023-05-10',
+            'location' => 'Cold Storage A',
+        ],
+        [
+            'id' => 4,
+            'type' => 'Beef',
+            'batch' => 'B-3456',
+            'quantity' => 520,
+            'processingDate' => '2023-04-12',
+            'expirationDate' => '2023-05-12',
+            'location' => 'Cold Storage C',
+        ],
+        [
+            'id' => 5,
+            'type' => 'Chicken',
+            'batch' => 'C-7890',
+            'quantity' => 280,
+            'processingDate' => '2023-04-17',
+            'expirationDate' => '2023-05-02',
+            'location' => 'Cold Storage B',
+        ],
+    ];
 }
 
 // Get loss data
@@ -89,74 +130,49 @@ function getActivityData() {
 }
 
 // Calculate total inventory
-function calculateTotalInventory($conn) {
-    $sql = "SELECT SUM(quantity) AS total_quantity FROM stockData";
-    $result = $conn->query($sql);
-
-    if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        $total = $row['total_quantity'];
-        
-        // You could dynamically calculate the change here (for now it's static)
-        $change = 3.2;
-        return [
-            'value' => $total,
-            'change' => $change
-        ];
-    } else {
-        return [
-            'value' => 0,
-            'change' => 0
-        ];
-    }
-}
-
-
-// Calculate spoilage rate (total kg after expiration date)
-function calculateSpoilageRate($inventoryData) {
-    $totalSpoiled = 0;
-
-    $today = new DateTime();
+function calculateTotalInventory($inventoryData) {
+    $total = 0;
     foreach ($inventoryData as $item) {
-        $expirationDate = new DateTime($item['expiration_Date']);
-        if ($expirationDate < $today) {
-            $totalSpoiled += $item['quantity'];  // Add the quantity of expired items to the total
-        }
+        $total += $item['quantity'];
     }
-
+    
+    // In a real application, you would compare with previous week's data
+    // For demonstration, we'll use a static value
     return [
-        'value' => $totalSpoiled,  // Total kg of spoiled inventory
-        'change' => -0.5 // Change can be calculated based on previous week's data, here it is static for demonstration
+        'value' => $total,
+        'change' => 3.2 // Percentage change from last week
     ];
 }
 
+// Calculate spoilage rate
+function calculateSpoilageRate($lossData) {
+    // In a real application, this would be calculated based on actual data
+    // For demonstration, we'll use static values
+    return [
+        'value' => 2.4,
+        'change' => -0.5 // Negative means improvement (less spoilage)
+    ];
+}
 
-// Calculate expiring soon inventory (expire in the next 2 days)
+// Calculate expiring soon inventory
 function calculateExpiringSoon($inventoryData) {
-    $totalExpiringSoon = 0;
-
-    $today = new DateTime();  // Current date
-    $twoDaysFromNow = new DateTime('+2 days');  // 2 days from today
+    $total = 0;
+    $today = new DateTime();
+    $oneWeek = new DateTime('+7 days');
     
     foreach ($inventoryData as $item) {
-        // Check if expiration_date exists and is valid
-        if (isset($item['expiration_Date'])) {
-            $expirationDate = new DateTime($item['expiration_Date']);  // Convert expiration_date to DateTime object
-            // Check if the expiration date is within the next 2 days
-            if ($expirationDate > $today && $expirationDate <= $twoDaysFromNow) {
-                $totalExpiringSoon += $item['quantity'];  // Add quantity of inventory that is expiring soon
-            }
+        $expirationDate = new DateTime($item['expirationDate']);
+        if ($expirationDate > $today && $expirationDate <= $oneWeek) {
+            $total += $item['quantity'];
         }
     }
     
+    // In a real application, you would compare with previous week's data
     return [
-        'value' => $totalExpiringSoon,  // Total kg of expiring soon inventory
-        'change' => 12  // Percentage change from last week (static for demonstration)
+        'value' => 320, // For demonstration
+        'change' => 12  // Percentage change from last week
     ];
 }
-
-
-
 
 // Format date
 function formatDate($date) {

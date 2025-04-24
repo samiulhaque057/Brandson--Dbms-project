@@ -26,18 +26,40 @@ if (isset($_SESSION['success_message'])) {
     <link rel="stylesheet" href="css/stylestest.css">
     <link rel="stylesheet" href="css/modal.css">
 
-    <?php 
-        // Get inventory data
-        $inventoryData = getInventoryData();
-        $lossData = getLossData();
-        $activityData = getActivityData();
-        
-        
-        // Calculate stats
-        $totalInventory = calculateTotalInventory($inventoryData);
-        $spoilageRate = calculateSpoilageRate($lossData);
-        $expiringSoon = calculateExpiringSoon($inventoryData);
-    ?>
+    <?php
+// Get inventory data from the database
+$inventoryData = getInventoryData($conn);
+$lossData = getLossData();
+$activityData = getActivityData();
+
+// Calculate total inventory
+$totalInventory = calculateTotalInventory($conn);
+
+// Calculate spoilage rate (total kg after expiration date)
+$spoilageRate = calculateSpoilageRate($inventoryData);
+
+// Calculate expiring soon inventory (expire in 2 days)
+$expiringSoon = calculateExpiringSoon($inventoryData);
+
+// Extract values for use in the HTML
+$totalQuantity = $totalInventory['value'];  // Total inventory
+$change = $totalInventory['change'];  // Change percentage
+
+$spoiledQuantity = $spoilageRate['value'];  // Spoiled inventory total kg
+$spoiledChange = $spoilageRate['change'];  // Change in spoilage
+
+$expiringQuantity = $expiringSoon['value'];  // Expiring soon inventory total kg
+$expiringChange = $expiringSoon['change'];  // Change in expiring soon
+
+
+
+
+
+//debug
+
+
+?>
+
 </head>
 <body>
     <div class="app-container">
@@ -152,11 +174,12 @@ if (isset($_SESSION['success_message'])) {
                                 <line x1="7" y1="7" x2="7.01" y2="7"></line>
                             </svg>
                         </div>
+                        <!-- Total Inventory Card -->
                         <div class="stat-info">
                             <span class="stat-label">Total Inventory</span>
-                            <h2 class="stat-value">1,750 kg</h2>
-                            <div class="stat-change positive">
-                                <span class="change-badge">+3.2%</span>
+                            <h2 class="stat-value"><?php echo number_format($totalQuantity); ?> kg</h2>
+                            <div class="stat-change <?php echo ($change >= 0) ? 'positive' : 'negative'; ?>">
+                                <span class="change-badge"><?php echo ($change >= 0) ? '+' : ''; echo number_format($change, 1); ?>%</span>
                                 <span class="change-period">from last week</span>
                             </div>
                         </div>
@@ -168,34 +191,39 @@ if (isset($_SESSION['success_message'])) {
                                 <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
                             </svg>
                         </div>
-                        <div class="stat-info">
-                            <span class="stat-label">Spoilage Rate</span>
-                            <h2 class="stat-value">2.4%</h2>
-                            <div class="stat-change positive">
-                                <span class="change-badge">-0.5%</span>
-                                <span class="change-period">from last week</span>
-                            </div>
-                        </div>
+                        <!-- Spoilage Rate Card -->
+<div class="stat-info">
+    <span class="stat-label">Spoilage Rate</span>
+    <h2 class="stat-value"><?php echo number_format($spoiledQuantity); ?> kg</h2>
+    <div class="stat-change <?php echo ($spoiledChange >= 0) ? 'positive' : 'negative'; ?>">
+        <span class="change-badge"><?php echo ($spoiledChange >= 0) ? '+' : ''; echo number_format($spoiledChange, 1); ?>%</span>
+        <span class="change-period">from last week</span>
+    </div>
+</div>
                     </div>
                     
-                    <div class="stat-card">
-                        <div class="stat-icon orange">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                                <line x1="16" y1="2" x2="16" y2="6"></line>
-                                <line x1="8" y1="2" x2="8" y2="6"></line>
-                                <line x1="3" y1="10" x2="21" y2="10"></line>
-                            </svg>
-                        </div>
-                        <div class="stat-info">
-                            <span class="stat-label">Expiring Soon</span>
-                            <h2 class="stat-value">320 kg</h2>
-                            <div class="stat-change negative">
-                                <span class="change-badge">+12%</span>
-                                <span class="change-period">from last week</span>
-                            </div>
-                        </div>
-                    </div>
+                    <!-- Expiring Soon Inventory Card -->
+<div class="stat-card">
+    <div class="stat-icon orange">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+    </div>
+    <!-- Expiring Soon Inventory Card -->
+
+    <div class="stat-info">
+        <span class="stat-label">Expiring Soon</span>
+        <h2 class="stat-value"><?php echo number_format($expiringQuantity); ?> kg</h2>
+        <div class="stat-change <?php echo ($expiringChange >= 0) ? 'positive' : 'negative'; ?>">
+            <span class="change-badge"><?php echo ($expiringChange >= 0) ? '+' : ''; echo number_format($expiringChange, 1); ?>%</span>
+            <span class="change-period">from last week</span>
+        </div>
+    </div>
+</div>
+
                     
                     <div class="stat-card">
                         <div class="stat-icon blue">
@@ -457,9 +485,10 @@ if (isset($_SESSION['success_message'])) {
             <input type="text" id="editLocation" name="location" required>
 
             <div class="modal-buttons">
-                <button type="submit" class="btn btn-primary">Save Changes</button>
+                
                 <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Cancel</button>
                 <button type="button" class="btn btn-danger" id="deleteBtn" onclick="deleteStock()">Delete Stock</button>
+                <button type="submit" class="btn btn-primary">Save Changes</button>
             </div>
         </form>
     </div>
@@ -484,18 +513,7 @@ if (isset($_SESSION['success_message'])) {
             document.getElementById('editModal').style.display = 'none';
         }
 
-        // Demo button to show modal
-        document.addEventListener('DOMContentLoaded', function() {
-            // Create a button to demonstrate the modal
-            const demoButton = document.createElement('button');
-            demoButton.textContent = 'Open Edit Modal';
-            demoButton.className = 'btn btn-primary';
-            demoButton.style.margin = '20px';
-            demoButton.onclick = function() {
-                openEditModal();
-            };
-            document.body.appendChild(demoButton);
-        });
+        
     </script>
 
 
@@ -759,14 +777,8 @@ function deleteStock() {
                 }
             });
 
-            // Inventory Breakdown Doughnut Chart
-            const breakdownCtx = document.getElementById('inventoryBreakdownChart').getContext('2d');
-            const breakdownChart = new Chart(breakdownCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Beef', 'Chicken', 'Lamb', 'Other'],
-                    datasets: [{
-                        <?php
+            // Inventory Breakdown Doughnut 
+            <?php
                     // Assuming you have a valid database connection
                     include 'includes/config.php';
 
@@ -791,8 +803,16 @@ function deleteStock() {
 
                     // Convert the PHP array to JSON and pass it to JavaScript
                     $meatDataJson = json_encode($meatData);
-                    ?>
-                        data: [45, 32, 18, 5],
+            ?>
+            const metaData = <?php echo $meatDataJson; ?>;
+            
+            const breakdownCtx = document.getElementById('inventoryBreakdownChart').getContext('2d');
+            const breakdownChart = new Chart(breakdownCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Beef', 'Chicken', 'Lamb', 'Other'],
+                    datasets: [{                        
+                        data: [metaData.Beef, metaData.Chicken, metaData.Lamb, metaData.Other],
                         backgroundColor: [
                             '#a855f7',
                             '#ec4899',
@@ -890,6 +910,9 @@ function deleteStock() {
             });
         });
     </script>
+
+
+
 
     <!-- Profile Dropdown Script -->
     <script>

@@ -1,4 +1,4 @@
-<?php
+ <?php
 include 'includes/config.php';
 include 'includes/functions.php';
 
@@ -13,8 +13,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $supplier = sanitize($_POST['supplier']);
     $cost = (float) $_POST['cost'];
     $processingDate = sanitize($_POST['processingDate']);
-    $expirationDate = sanitize($_POST['expirationDate']);
+    $expirationDate = sanitize($_POST['expirationDate']);    
     $location = sanitize($_POST['location']);
+    
    
     
     // Validate required fields

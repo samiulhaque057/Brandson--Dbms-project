@@ -26,15 +26,30 @@ if (isset($_SESSION['success_message'])) {
     <link rel="stylesheet" href="css/stylestest.css">
 
     <?php 
-        // Get inventory data
-        $inventoryData = getInventoryData();
+                // Get inventory data from the database
+        $inventoryData = getInventoryData($conn);
         $lossData = getLossData();
         $activityData = getActivityData();
-        
-        // Calculate stats
-        $totalInventory = calculateTotalInventory($inventoryData);
-        $spoilageRate = calculateSpoilageRate($lossData);
+
+        // Calculate total inventory
+        $totalInventory = calculateTotalInventory($conn);
+
+        // Calculate spoilage rate (total kg after expiration date)
+        $spoilageRate = calculateSpoilageRate($inventoryData);
+
+        // Calculate expiring soon inventory (expire in 2 days)
         $expiringSoon = calculateExpiringSoon($inventoryData);
+
+        // Extract values for use in the HTML
+        $totalQuantity = $totalInventory['value'];  // Total inventory
+        $change = $totalInventory['change'];  // Change percentage
+
+        $spoiledQuantity = $spoilageRate['value'];  // Spoiled inventory total kg
+        $spoiledChange = $spoilageRate['change'];  // Change in spoilage
+
+        $expiringQuantity = $expiringSoon['value'];  // Expiring soon inventory total kg
+        $expiringChange = $expiringSoon['change'];  // Change in expiring soon
+
     ?>
 </head>
 <body>

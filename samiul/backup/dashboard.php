@@ -24,6 +24,7 @@ if (isset($_SESSION['success_message'])) {
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/stylestest.css">
+    <link rel="stylesheet" href="css/modal.css">
 
     <?php 
         // Get inventory data
@@ -361,79 +362,78 @@ if (isset($_SESSION['success_message'])) {
         </div>
     </div>
 
-    <!-- Table for Inventory Data -->
-    <div class="table-responsive">
-        <table class="inventory-table">
-            <thead>
-                <tr>
-                    <th>Meat Type</th>
-                    <th>Batch #</th>
-                    <th>Quantity (kg)</th>
-                    <th>Processing Date</th>
-                    <th>Expiration Date</th>
-                    <th>Storage Location</th>
-                    <th>Actions</th> <!-- Actions column for the edit button -->
-                </tr>
-            </thead>
+<!-- Table for Inventory Data -->
+        <div class="table-responsive">
+            <table class="inventory-table">
+                <thead>
+                    <tr>
+                        <th>Meat Type</th>
+                        <th>Batch #</th>
+                        <th>Quantity (kg)</th>
+                        <th>Processing Date</th>
+                        <th>Expiration Date</th>
+                        <th>Storage Location</th>
+                        <th>Actions</th> <!-- Actions column for the edit button -->
+                    </tr>
+                </thead>
 
-            <tbody id="inventory-table-body">
-                <?php
-                // Fetch the stock data from the database
-                include 'includes/config.php';
+                <tbody id="inventory-table-body">
+                    <?php
+                    // Fetch the stock data from the database
+                    include 'includes/config.php';
 
-                // Assuming you have a valid database connection and the table is named 'stockData'
-                $sql = "SELECT batch, type, quantity, supplier, cost, processing_date, expiration_date, location, date_added FROM stockData ORDER BY date_added DESC"; // Fetch all data ordered by date_added
-                $result = $conn->query($sql);
+                    // Assuming you have a valid database connection and the table is named 'stockData'
+                    $sql = "SELECT batch, type, quantity, supplier, cost, processing_date, expiration_date, location, date_added FROM stockData ORDER BY date_added DESC"; // Fetch all data ordered by date_added
+                    $result = $conn->query($sql);
 
-                if ($result->num_rows > 0) {
-                    // Loop through the results and display each record in a row
-                    while ($row = $result->fetch_assoc()) {
-                        // Assigning the class based on meat type
-                        $meatClass = '';
-                        if ($row['type'] == 'Beef') {
-                            $meatClass = 'purple';
-                        } elseif ($row['type'] == 'Chicken') {
-                            $meatClass = 'pink';
-                        } elseif ($row['type'] == 'Lamb') {
-                            $meatClass = 'orange';
-                        } elseif ($row['type'] == 'Pork') {
-                            $meatClass = 'blue';
-                        } elseif ($row['type'] == 'Fish') {
-                            $meatClass = 'green';
+                    if ($result->num_rows > 0) {
+                        // Loop through the results and display each record in a row
+                        while ($row = $result->fetch_assoc()) {
+                            // Assigning the class based on meat type
+                            $meatClass = '';
+                            if ($row['type'] == 'Beef') {
+                                $meatClass = 'purple';
+                            } elseif ($row['type'] == 'Chicken') {
+                                $meatClass = 'pink';
+                            } elseif ($row['type'] == 'Lamb') {
+                                $meatClass = 'orange';
+                            } elseif ($row['type'] == 'Pork') {
+                                $meatClass = 'blue';
+                            } elseif ($row['type'] == 'Fish') {
+                                $meatClass = 'green';
+                            }
+
+                            echo "<tr class='inventory-row' data-type='" . $row['type'] . "' data-batch='" . $row['batch'] . "'>
+                                    <td>
+                                        <div class='meat-type'>
+                                            <span class='meat-indicator " . $meatClass . "'></span>
+                                            " . $row['type'] . "
+                                        </div>
+                                    </td>
+                                    <td>" . $row['batch'] . "</td>
+                                    <td>" . $row['quantity'] . " kg</td>
+                                    <td>" . $row['processing_date'] . "</td>
+                                    <td>" . $row['expiration_date'] . "</td>
+                                    <td>" . $row['location'] . "</td>
+                                    <td>
+                                        <button class='row-menu-btn' onclick='openEditModal(\"" . $row['batch'] . "\")'>
+                                            <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>
+                                                <circle cx='12' cy='12' r='1'></circle>
+                                                <circle cx='19' cy='12' r='1'></circle>
+                                                <circle cx='5' cy='12' r='1'></circle>
+                                            </svg>
+                                        </button>
+                                    </td>
+                                </tr>";
                         }
-
-                        echo "<tr class='inventory-row' data-type='" . $row['type'] . "' data-batch='" . $row['batch'] . "'>
-                                <td>
-                                    <div class='meat-type'>
-                                        <span class='meat-indicator " . $meatClass . "'></span>
-                                        " . $row['type'] . "
-                                    </div>
-                                </td>
-                                <td>" . $row['batch'] . "</td>
-                                <td>" . $row['quantity'] . " kg</td>
-                                <td>" . $row['processing_date'] . "</td>
-                                <td>" . $row['expiration_date'] . "</td>
-                                <td>" . $row['location'] . "</td>
-                                <td>
-                                    <button class='row-menu-btn' onclick='openEditModal(\"" . $row['batch'] . "\")'>
-                                        <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>
-                                            <circle cx='12' cy='12' r='1'></circle>
-                                            <circle cx='19' cy='12' r='1'></circle>
-                                            <circle cx='5' cy='12' r='1'></circle>
-                                        </svg>
-                                    </button>
-                                </td>
-                            </tr>";
+                    } else {
+                        // If no records, display a message
+                        echo "<tr><td colspan='7' class='text-center'>No stock data available</td></tr>";
                     }
-                } else {
-                    // If no records, display a message
-                    echo "<tr><td colspan='7' class='text-center'>No stock data available</td></tr>";
-                }
-                ?>
-            </tbody>
-        </table>
-    </div>
-</div>
+                    ?>
+                </tbody>
+            </table>
+        </div>
 
 <!-- Edit Modal -->
 <div class="modal" id="editModal">
@@ -442,7 +442,7 @@ if (isset($_SESSION['success_message'])) {
         <h3>Edit Stock</h3>
         <form id="editForm">
             <label for="batch">Batch #:</label>
-            <input type="text" id="editBatch" name="batch" required>
+            <input type="text" id="editBatch" name="batch" required readonly>
 
             <label for="quantity">Quantity (kg):</label>
             <input type="number" id="editQuantity" name="quantity" required>
@@ -456,64 +456,176 @@ if (isset($_SESSION['success_message'])) {
             <label for="location">Storage Location:</label>
             <input type="text" id="editLocation" name="location" required>
 
-            <button type="submit">Save Changes</button>
+            <div class="modal-buttons">
+                
+                <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Cancel</button>
+                <button type="button" class="btn btn-danger" id="deleteBtn" onclick="deleteStock()">Delete Stock</button>
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
         </form>
     </div>
 </div>
 
-<!-- JavaScript for Filter and Modal -->
-<script>
-    // Filter Logic
-    document.getElementById('filter-all').addEventListener('click', function() {
-        filterInventory('All');
-    });
-    document.getElementById('filter-beef').addEventListener('click', function() {
-        filterInventory('Beef');
-    });
-    document.getElementById('filter-chicken').addEventListener('click', function() {
-        filterInventory('Chicken');
-    });
-    document.getElementById('filter-lamb').addEventListener('click', function() {
-        filterInventory('Lamb');
-    });
 
-    function filterInventory(meatType) {
-        const rows = document.querySelectorAll('.inventory-row');
-        rows.forEach(row => {
-            if (meatType === 'All' || row.dataset.type === meatType) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
+    <!-- Demo script to show/hide modal -->
+    <script>
+        // Function to open the edit modal
+        function openEditModal(batch, quantity, processingDate, expirationDate, location) {
+            document.getElementById('editBatch').value = batch || 'B-12345';
+            document.getElementById('editQuantity').value = quantity || 250;
+            document.getElementById('editProcessingDate').value = processingDate || '2023-04-15';
+            document.getElementById('editExpirationDate').value = expirationDate || '2023-07-15';
+            document.getElementById('editLocation').value = location || 'Cold Storage A';
+            
+            document.getElementById('editModal').style.display = 'block';
+        }
+
+        // Function to close the edit modal
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
+
+        
+    </script>
+
+
+        <!-- JavaScript for Filter and Modal -->
+        <script>
+            // Filter Logic
+            document.getElementById('filter-all').addEventListener('click', function() {
+                filterInventory('All');
+            });
+            document.getElementById('filter-beef').addEventListener('click', function() {
+                filterInventory('Beef');
+            });
+            document.getElementById('filter-chicken').addEventListener('click', function() {
+                filterInventory('Chicken');
+            });
+            document.getElementById('filter-lamb').addEventListener('click', function() {
+                filterInventory('Lamb');
+            });
+
+            function filterInventory(meatType) {
+                const rows = document.querySelectorAll('.inventory-row');
+                rows.forEach(row => {
+                    if (meatType === 'All' || row.dataset.type === meatType) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
             }
-        });
+
+            // Edit Modal Logic
+            let selectedBatch;
+
+            function openEditModal(batch) {
+                selectedBatch = batch;
+                const row = document.querySelector(`[data-batch="${batch}"]`);
+                document.getElementById('editBatch').value = row.cells[1].textContent;
+                document.getElementById('editQuantity').value = row.cells[2].textContent;
+                document.getElementById('editProcessingDate').value = row.cells[3].textContent;
+                document.getElementById('editExpirationDate').value = row.cells[4].textContent;
+                document.getElementById('editLocation').value = row.cells[5].textContent;
+                document.getElementById('editModal').style.display = 'block';
+            }
+
+            function closeEditModal() {
+                document.getElementById('editModal').style.display = 'none';
+            }
+
+            // Handle form submission to save the changes
+            document.getElementById('editForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                // Collect the data from the form
+                const batch = document.getElementById('editBatch').value;
+                const quantity = document.getElementById('editQuantity').value;
+                const processingDate = document.getElementById('editProcessingDate').value;
+                const expirationDate = document.getElementById('editExpirationDate').value;
+                const location = document.getElementById('editLocation').value;
+
+                // Prepare the data for AJAX request
+                const data = {
+                    batch: batch,
+                    quantity: quantity,
+                    processing_date: processingDate,
+                    expiration_date: expirationDate,
+                    location: location
+                };
+
+                // AJAX request to update the database
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', 'update_stock.php', true);
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        const response = JSON.parse(xhr.responseText);
+                        if (response.success) {
+                            // Update the table row without reloading the page
+                            updateTableRow(batch, response.updatedData);
+                            closeEditModal();
+                        } else {
+                            alert('Failed to update the data.');
+                        }
+                    }
+                };
+                xhr.send(JSON.stringify(data));
+            });
+
+            // Function to update the table row after successful update
+            function updateTableRow(batch, updatedData) {
+                const row = document.querySelector(`[data-batch="${batch}"]`);
+                row.cells[2].textContent = updatedData.quantity + " kg";
+                row.cells[3].textContent = updatedData.processing_date;
+                row.cells[4].textContent = updatedData.expiration_date;
+                row.cells[5].textContent = updatedData.location;
+            }
+
+
+            // Function to handle deleting stock
+function deleteStock() {
+    if (!selectedBatch) {
+        alert("No stock selected for deletion.");
+        return;
     }
 
-    // Edit Modal Logic
-    let selectedBatch;
+    // Confirm deletion
+    if (confirm("Are you sure you want to delete this stock?")) {
+        // Prepare data to send with the request
+        const data = {
+            batch: selectedBatch // Send the selected batch to delete
+        };
 
-    function openEditModal(batch) {
-        selectedBatch = batch;
-        const row = document.querySelector(`[data-batch="${batch}"]`);
-        document.getElementById('editBatch').value = row.cells[1].textContent;
-        document.getElementById('editQuantity').value = row.cells[2].textContent;
-        document.getElementById('editProcessingDate').value = row.cells[3].textContent;
-        document.getElementById('editExpirationDate').value = row.cells[4].textContent;
-        document.getElementById('editLocation').value = row.cells[5].textContent;
-        document.getElementById('editModal').style.display = 'block';
+        // AJAX request to delete the stock from the database
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'delete_stock.php', true);
+        xhr.setRequestHeader('Content-Type', 'application/json'); // Ensure the request is sent as JSON
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                const response = JSON.parse(xhr.responseText); // Response from PHP
+                if (response.success) {
+                    // If successful, remove the row from the table
+                    const row = document.querySelector(`[data-batch="${selectedBatch}"]`);
+                    if (row) {
+                        row.remove();
+                    }
+                    closeEditModal(); // Close the modal after deletion
+                } else {
+                    alert('Failed to delete stock: ' + response.error);
+                }
+            } else {
+                alert('Error occurred during deletion');
+            }
+        };
+        xhr.send(JSON.stringify(data)); // Send data as JSON (not form data)
     }
+}
 
-    function closeEditModal() {
-        document.getElementById('editModal').style.display = 'none';
-    }
+        </script>
 
-    // Handle form submission to save the changes
-    document.getElementById('editForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        console.log('Saving data for batch', selectedBatch);
-        // Use AJAX or form submission to save the changes
-        closeEditModal();
-    });
-</script>
+
+
 
 
                  <!-- Post-Harvest Loss Recording -->

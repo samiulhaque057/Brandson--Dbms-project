@@ -14,6 +14,57 @@ function getInventoryData($conn) {
     return $inventoryData;
 }
 
+// Calculate total inventory and breakdowns
+function getInventoryBreakdown($conn) {
+    $inventoryData = getInventoryData($conn);
+    $totalQuantity = 0;
+    $categories = [
+        'Beef' => 0,
+        'Chicken' => 0,
+        'Lamb' => 0,
+        'Other' => 0
+    ];
+    
+    // Calculate total quantity and breakdown by category
+    foreach ($inventoryData as $item) {
+        $totalQuantity += $item['quantity'];
+        
+        // Assuming 'type' column exists, modify if needed
+        switch ($item['type']) {
+            case 'Beef':
+                $categories['Beef'] += $item['quantity'];
+                break;
+            case 'Chicken':
+                $categories['Chicken'] += $item['quantity'];
+                break;
+            case 'Lamb':
+                $categories['Lamb'] += $item['quantity'];
+                break;
+            default:
+                $categories['Other'] += $item['quantity'];
+                break;
+        }
+    }
+    
+    // Calculate breakdown percentages
+    $breakdown = [];
+    foreach ($categories as $category => $quantity) {
+        $breakdown[$category] = [
+            'quantity' => $quantity,
+            'percentage' => ($totalQuantity > 0) ? round(($quantity / $totalQuantity) * 100, 2) : 0
+        ];
+    }
+    
+    return [
+        'total' => $totalQuantity,
+        'change' => 3.2, // Example: static change, adjust based on real data
+        'breakdown' => $breakdown
+    ];
+}
+
+
+
+
 // Get loss data
 function getLossData() {
     global $conn;
@@ -141,6 +192,7 @@ function calculateExpiringSoon($inventoryData) {
     foreach ($inventoryData as $item) {
         // Check if expiration_date exists and is valid
         if (isset($item['expiration_Date'])) {
+
             $expirationDate = new DateTime($item['expiration_Date']);  // Convert expiration_date to DateTime object
             // Check if the expiration date is within the next 2 days
             if ($expirationDate > $today && $expirationDate <= $twoDaysFromNow) {

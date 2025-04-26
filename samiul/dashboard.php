@@ -136,13 +136,26 @@ if (!isset($inventory)) {
         <main class="main-content">
             <!-- Header -->
             <header class="header">
-                <div class="search-container">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                    </svg>
-                    <input type="text" placeholder="Search inventory, batches..." class="search-input">
+            <div class="search-container" style="display: flex; align-items: center; gap: 8px; background-color: #000;">
+                    <div style="position: relative; display: flex; align-items: center;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; left: 10px; color: #888;">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <input type="text" id="search-input" placeholder="Search batch or type" class="search-input" style="
+                            background-color: #111;
+                            color: #fff;
+                            border: 1px solid #444;
+                            padding: 8px 12px 8px 34px;
+                            border-radius: 6px;
+                            font-size: 14px;
+                            outline: none;
+                            width: 100%;
+                            max-width: 380px; /* Adjust width as necessary */
+                        ">
+                    </div>
                 </div>
+
                 
                 <h1 class="page-title">Dashboard</h1>
                 
@@ -384,96 +397,88 @@ if (!isset($inventory)) {
         </div>
     </div>
 
-<!-- Table for Inventory Data -->
-<div class="table-responsive">
-    <table class="inventory-table">
-        <thead>
-            <tr>
-                <th>Meat Type</th>
-                <th>Batch #</th>
-                <th>Quantity (kg)</th>
-                <th>Processing Date</th>
-                <th>Expiration Date</th>
-                <th>Storage Location</th>
-                <th>Actions</th> <!-- Actions column for the edit button -->
-            </tr>
-        </thead>
-        <tbody id="inventory-table-body">
-            <?php
-            include 'includes/config.php';
 
-            // Assuming you have a valid database connection and the table is named 'stockData'
-            $sql = "SELECT batch, type, quantity, supplier, cost, processing_date, expiration_date, location, date_added FROM stockData ORDER BY date_added DESC"; // Fetch all data ordered by date_added
-            $result = $conn->query($sql);
 
-            if ($result->num_rows > 0) {
-                // Loop through the results and display each record in a row
-                while ($row = $result->fetch_assoc()) {
-                    // Assigning the class based on meat type
-                    $meatClass = '';
-                    if ($row['type'] == 'Beef') {
-                        $meatClass = 'purple';
-                    } elseif ($row['type'] == 'Chicken') {
-                        $meatClass = 'pink';
-                    } elseif ($row['type'] == 'Lamb') {
-                        $meatClass = 'orange';
-                    } elseif ($row['type'] == 'Pork') {
-                        $meatClass = 'blue';
-                    } elseif ($row['type'] == 'Fish') {
-                        $meatClass = 'green';
-                    }
+        <table class="inventory-table">
+            <thead>
+                <tr>
+                    <th>Meat Type</th>
+                    <th>Batch #</th>
+                    <th>Quantity (kg)</th>
+                    <th>Processing Date</th>
+                    <th>Expiration Date</th>
+                    <th>Storage Location</th>
+                    <th>Actions</th> <!-- Actions column for the edit button -->
+                </tr>
+            </thead>
+            <tbody id="inventory-table-body">
+                <?php
+                include 'includes/config.php';
 
-                    echo "<tr class='inventory-row' data-type='" . $row['type'] . "' data-batch='" . $row['batch'] . "'>
-                            <td>
-                                <div class='meat-type'>
-                                    <span class='meat-indicator " . $meatClass . "'></span>
-                                    " . $row['type'] . "
-                                </div>
-                            </td>
-                            <td>" . $row['batch'] . "</td>
-                            <td>" . $row['quantity'] . " kg</td>
-                            <td>" . $row['processing_date'] . "</td>
-                            <td>" . $row['expiration_date'] . "</td>
-                            <td>" . $row['location'] . "</td>
-                            <td>
-                                <button class='row-menu-btn' onclick='openEditModal(\"" . $row['batch'] . "\")'>
+                // Fetch all inventory data from the database
+                $sql = "SELECT batch, type, quantity, processing_date, expiration_date, location FROM stockData ORDER BY date_added DESC";
+                $result = $conn->query($sql);
+
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        $meatClass = '';
+                        switch ($row['type']) {
+                            case 'Beef': $meatClass = 'purple'; break;
+                            case 'Chicken': $meatClass = 'pink'; break;
+                            case 'Lamb': $meatClass = 'orange'; break;
+                            case 'Pork': $meatClass = 'blue'; break;
+                            case 'Fish': $meatClass = 'green'; break;
+                        }
+                        echo "<tr class='inventory-row' data-type='" . $row['type'] . "' data-batch='" . $row['batch'] . "'>
+                                <td><div class='meat-type'>
+                                        <span class='meat-indicator " . $meatClass . "'></span>" . $row['type'] . "</div></td>
+                                <td>" . $row['batch'] . "</td>
+                                <td>" . $row['quantity'] . " kg</td>
+                                <td>" . $row['processing_date'] . "</td>
+                                <td>" . $row['expiration_date'] . "</td>
+                                <td>" . $row['location'] . "</td>
+                                <td><button class='row-menu-btn' onclick='openEditModal(\"" . $row['batch'] . "\")'>
                                     <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>
                                         <circle cx='12' cy='12' r='1'></circle>
                                         <circle cx='19' cy='12' r='1'></circle>
                                         <circle cx='5' cy='12' r='1'></circle>
                                     </svg>
-                                </button>
-                            </td>
-                        </tr>";
+                                </button></td>
+                            </tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='7' class='text-center'>No stock data available</td></tr>";
                 }
-            } else {
-                // If no records, display a message
-                echo "<tr><td colspan='7' class='text-center'>No stock data available</td></tr>";
-            }
-            ?>
-        </tbody>
-    </table>
+                ?>
+            </tbody>
+        </table>
+    </div>
 </div>
 
+<!-- JavaScript for Real-Time Search -->
 <script>
-    // Function to filter inventory based on search input
-    document.getElementById('search-input').addEventListener('input', function() {
-        const searchQuery = this.value.trim(); // Get the search query
-        const tableBody = document.getElementById('inventory-table-body');
+    // Function to filter inventory rows based on search query
+    document.getElementById('search-input').addEventListener('input', function () {
+        const searchQuery = this.value.toLowerCase();
+        const rows = document.querySelectorAll('.inventory-row');
 
-        // Send AJAX request to server to fetch filtered data
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', 'fetch_inventory.php?search=' + encodeURIComponent(searchQuery), true);
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                tableBody.innerHTML = xhr.responseText; // Insert the filtered rows into the table
+        rows.forEach(row => {
+            const batch = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+            const type = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
+            const quantity = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+            const location = row.querySelector('td:nth-child(6)').textContent.toLowerCase();
+
+            if (batch.includes(searchQuery) || type.includes(searchQuery) || quantity.includes(searchQuery) || location.includes(searchQuery)) {
+                row.style.display = '';
             } else {
-                console.error('Failed to fetch inventory data.');
+                row.style.display = 'none';
             }
-        };
-        xhr.send();
+        });
     });
 </script>
+
+
+
 <!-- Edit Modal -->
 <div class="modal" id="editModal">
     <div class="modal-content">

@@ -1,5 +1,4 @@
 <?php
-// Include your database connection
 include 'includes/config.php';
 
 // Get the search query from the request (default to empty if not set)

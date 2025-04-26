@@ -26,18 +26,47 @@ if (isset($_SESSION['success_message'])) {
     <link rel="stylesheet" href="css/stylestest.css">
     <link rel="stylesheet" href="css/modal.css">
 
-    <?php 
-        // Get inventory data
-        $inventoryData = getInventoryData();
-        $lossData = getLossData();
-        $activityData = getActivityData();
-        
-        
-        // Calculate stats
-        $totalInventory = calculateTotalInventory($inventoryData);
-        $spoilageRate = calculateSpoilageRate($lossData);
-        $expiringSoon = calculateExpiringSoon($inventoryData);
-    ?>
+    <?php
+// Get inventory data from the database
+$inventoryData = getInventoryData($conn);
+$lossData = getLossData();
+$activityData = getActivityData();
+
+// Calculate total inventory
+$totalInventory = calculateTotalInventory($conn);
+
+// Calculate spoilage rate (total kg after expiration date)
+$spoilageRate = calculateSpoilageRate($inventoryData);
+
+// Calculate expiring soon inventory (expire in 2 days)
+$expiringSoon = calculateExpiringSoon($inventoryData);
+
+// Extract values for use in the HTML
+$totalQuantity = $totalInventory['value'];  // Total inventory
+$change = $totalInventory['change'];  // Change percentage
+
+$spoiledQuantity = $spoilageRate['value'];  // Spoiled inventory total kg
+$spoiledChange = $spoilageRate['change'];  // Change in spoilage
+
+$expiringQuantity = $expiringSoon['value'];  // Expiring soon inventory total kg
+$expiringChange = $expiringSoon['change'];  // Change in expiring soon
+
+//Inventory card//
+
+// Get Inventory Data - Don't overwrite existing variables
+if (!isset($inventory)) {
+    $inventory = getInventoryBreakdown($conn);
+}
+
+
+
+
+
+//debug
+
+
+?>
+
 </head>
 <body>
     <div class="app-container">
@@ -107,13 +136,40 @@ if (isset($_SESSION['success_message'])) {
         <main class="main-content">
             <!-- Header -->
             <header class="header">
-                <div class="search-container">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="search-icon">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                    </svg>
-                    <input type="text" placeholder="Search inventory, batches..." class="search-input">
-                </div>
+            <div class="search-container" style="display: flex; align-items: center; gap: 8px; background-color: #000;">
+    <div style="position: relative; display: flex; align-items: center;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; left: 10px; color: #888;">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" placeholder="Search inventory, batches..." style="
+            background-color: #111;
+            color: #fff;
+            border: 1px solid #444;
+            padding: 8px 12px 8px 34px;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+            width: 220px;
+        ">
+    </div>
+    <button style="
+        background-color: #333;
+        color: white;
+        border: 1px solid #555;
+        padding: 8px 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.2s, transform 0.1s;
+    " 
+    onmousedown="this.style.transform='scale(0.95)'" 
+    onmouseup="this.style.transform='scale(1)'"
+    onmouseleave="this.style.transform='scale(1)'">
+        Search
+    </button>
+</div>
+
                 
                 <h1 class="page-title">Dashboard</h1>
                 
@@ -152,12 +208,12 @@ if (isset($_SESSION['success_message'])) {
                                 <line x1="7" y1="7" x2="7.01" y2="7"></line>
                             </svg>
                         </div>
+                        <!-- Total Inventory Card -->
                         <div class="stat-info">
                             <span class="stat-label">Total Inventory</span>
-                            <h2 class="stat-value">1,750 kg</h2>
-                            <div class="stat-change positive">
-                                <span class="change-badge">+3.2%</span>
-                                <span class="change-period">from last week</span>
+                            <h2 class="stat-value"><?php echo number_format($totalQuantity); ?> kg</h2>
+                            <div class="stat-change <?php echo ($change >= 0) ? 'positive' : 'negative'; ?>">
+                            <span class="change-period">Total amount of meat in stock</span>
                             </div>
                         </div>
                     </div>
@@ -168,34 +224,38 @@ if (isset($_SESSION['success_message'])) {
                                 <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
                             </svg>
                         </div>
-                        <div class="stat-info">
-                            <span class="stat-label">Spoilage Rate</span>
-                            <h2 class="stat-value">2.4%</h2>
-                            <div class="stat-change positive">
-                                <span class="change-badge">-0.5%</span>
-                                <span class="change-period">from last week</span>
-                            </div>
-                        </div>
+                        <!-- Spoilage Rate Card -->
+<div class="stat-info">
+    <span class="stat-label">Spoilage Rate</span>
+    <h2 class="stat-value"><?php echo number_format($spoiledQuantity); ?> kg</h2>
+    <div class="stat-change <?php echo ($spoiledChange >= 0) ? 'positive' : 'negative'; ?>">
+    <span class="change-period">Expired</span>
+    </div>
+</div>
                     </div>
                     
-                    <div class="stat-card">
-                        <div class="stat-icon orange">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                                <line x1="16" y1="2" x2="16" y2="6"></line>
-                                <line x1="8" y1="2" x2="8" y2="6"></line>
-                                <line x1="3" y1="10" x2="21" y2="10"></line>
-                            </svg>
-                        </div>
-                        <div class="stat-info">
-                            <span class="stat-label">Expiring Soon</span>
-                            <h2 class="stat-value">320 kg</h2>
-                            <div class="stat-change negative">
-                                <span class="change-badge">+12%</span>
-                                <span class="change-period">from last week</span>
-                            </div>
-                        </div>
-                    </div>
+                    <!-- Expiring Soon Inventory Card -->
+<div class="stat-card">
+    <div class="stat-icon orange">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+    </div>
+    <!-- Expiring Soon Inventory Card -->
+
+    <div class="stat-info">
+        <span class="stat-label">Expiring Soon</span>
+        <h2 class="stat-value"><?php echo number_format($expiringQuantity); ?> kg</h2>
+        <div class="stat-change <?php echo ($expiringChange >= 0) ? 'positive' : 'negative'; ?>">
+            
+            <span class="change-period">Expiring within 2 days</span>
+        </div>
+    </div>
+</div>
+
                     
                     <div class="stat-card">
                         <div class="stat-icon blue">
@@ -240,63 +300,52 @@ if (isset($_SESSION['success_message'])) {
                         </div>
                     </div>
 
-                    <!-- Total Inventory Card -->
-                    <div class="chart-card inventory-total">
-                        <div class="chart-header">
-                            <h3>Total Inventory</h3>
-                        </div>
-                        <div class="chart-body">
-                            <div class="inventory-total-value">
-                                <h1>1,750 kg</h1>
-                                <div class="stat-change positive">
-                                    <span class="change-badge">+3.2%</span>
-                                    <span class="change-period">from last week</span>
-                                </div>
-                            </div>
-                            
-                            <div class="inventory-breakdown">
-                                <div class="breakdown-item">
-                                    <div class="breakdown-header">
-                                        <span>Beef</span>
-                                        <span>45%</span>
-                                    </div>
-                                    <div class="progress">
-                                        <div class="progress-bar purple" style="width: 45%"></div>
-                                    </div>
-                                </div>
-                                
-                                <div class="breakdown-item">
-                                    <div class="breakdown-header">
-                                        <span>Chicken</span>
-                                        <span>32%</span>
-                                    </div>
-                                    <div class="progress">
-                                        <div class="progress-bar pink" style="width: 32%"></div>
-                                    </div>
-                                </div>
-                                
-                                <div class="breakdown-item">
-                                    <div class="breakdown-header">
-                                        <span>Lamb</span>
-                                        <span>18%</span>
-                                    </div>
-                                    <div class="progress">
-                                        <div class="progress-bar orange" style="width: 18%"></div>
-                                    </div>
-                                </div>
-                                
-                                <div class="breakdown-item">
-                                    <div class="breakdown-header">
-                                        <span>Other</span>
-                                        <span>5%</span>
-                                    </div>
-                                    <div class="progress">
-                                        <div class="progress-bar gray" style="width: 5%"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+            <!-- Total Inventory Card -->
+            <div class="chart-card inventory-total">
+    <div class="chart-header">
+        <h3>Total Inventory</h3>
+    </div>
+    <div class="chart-body">
+        <div class="inventory-total-value">
+            <h1><?php echo formatNumber($inventory['total']); ?> kg</h1>
+            <div class="stat-change positive">
+                <!-- <span class="change-badge">+<?php echo $inventory['change']; ?>%</span> -->
+                <span class="change-period">Breakdown by type:</span>
+            </div>
+        </div>
+        
+        <div class="inventory-breakdown">
+            <?php 
+            // Define a color mapping for the 'type' values
+            $colorMap = [
+                'Beef' => 'purple',
+                'Chicken' => 'pink',
+                'Lamb' => 'orange',
+                'Other' => 'gray' // Adjust or add more categories if needed
+            ];
+
+            // Loop through each category in the breakdown
+            foreach ($inventory['breakdown'] as $type => $data): 
+                // Get the color class for the type
+                $colorClass = isset($colorMap[$type]) ? $colorMap[$type] : 'default-color'; // Default color if not found
+            ?>
+                <div class="breakdown-item">
+                    <div class="breakdown-header">
+                        <span><?php echo $type; ?></span>
+                        <!-- Display percentage and kg -->
+                        <span><?php echo $data['percentage']; ?>% / <?php echo formatNumber($data['quantity']); ?>kg</span>
                     </div>
+                    <div class="progress">
+                        <div class="progress-bar <?php echo $colorClass; ?>" style="width: <?php echo $data['percentage']; ?>%"></div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+</div>
+
+
+                    
 
                     
 
@@ -362,78 +411,98 @@ if (isset($_SESSION['success_message'])) {
         </div>
     </div>
 
-<!-- Table for Inventory Data -->
-        <div class="table-responsive">
-            <table class="inventory-table">
-                <thead>
-                    <tr>
-                        <th>Meat Type</th>
-                        <th>Batch #</th>
-                        <th>Quantity (kg)</th>
-                        <th>Processing Date</th>
-                        <th>Expiration Date</th>
-                        <th>Storage Location</th>
-                        <th>Actions</th> <!-- Actions column for the edit button -->
-                    </tr>
-                </thead>
+    <!-- Search Input -->
+    <div class="table-responsive">
+    <input type="text" id="search-input" placeholder="Search inventory, batches..." class="search-input" style="
+    background-color: #111;
+    color: #fff;
+    border: 1px solid #444; /* Added border */
+    padding: 8px 12px 8px 34px;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+    width: 100%;
+">
 
-                <tbody id="inventory-table-body">
-                    <?php
-                    // Fetch the stock data from the database
-                    include 'includes/config.php';
+        <table class="inventory-table">
+            <thead>
+                <tr>
+                    <th>Meat Type</th>
+                    <th>Batch #</th>
+                    <th>Quantity (kg)</th>
+                    <th>Processing Date</th>
+                    <th>Expiration Date</th>
+                    <th>Storage Location</th>
+                    <th>Actions</th> <!-- Actions column for the edit button -->
+                </tr>
+            </thead>
+            <tbody id="inventory-table-body">
+                <?php
+                include 'includes/config.php';
 
-                    // Assuming you have a valid database connection and the table is named 'stockData'
-                    $sql = "SELECT batch, type, quantity, supplier, cost, processing_date, expiration_date, location, date_added FROM stockData ORDER BY date_added DESC"; // Fetch all data ordered by date_added
-                    $result = $conn->query($sql);
+                // Fetch all inventory data from the database
+                $sql = "SELECT batch, type, quantity, processing_date, expiration_date, location FROM stockData ORDER BY date_added DESC";
+                $result = $conn->query($sql);
 
-                    if ($result->num_rows > 0) {
-                        // Loop through the results and display each record in a row
-                        while ($row = $result->fetch_assoc()) {
-                            // Assigning the class based on meat type
-                            $meatClass = '';
-                            if ($row['type'] == 'Beef') {
-                                $meatClass = 'purple';
-                            } elseif ($row['type'] == 'Chicken') {
-                                $meatClass = 'pink';
-                            } elseif ($row['type'] == 'Lamb') {
-                                $meatClass = 'orange';
-                            } elseif ($row['type'] == 'Pork') {
-                                $meatClass = 'blue';
-                            } elseif ($row['type'] == 'Fish') {
-                                $meatClass = 'green';
-                            }
-
-                            echo "<tr class='inventory-row' data-type='" . $row['type'] . "' data-batch='" . $row['batch'] . "'>
-                                    <td>
-                                        <div class='meat-type'>
-                                            <span class='meat-indicator " . $meatClass . "'></span>
-                                            " . $row['type'] . "
-                                        </div>
-                                    </td>
-                                    <td>" . $row['batch'] . "</td>
-                                    <td>" . $row['quantity'] . " kg</td>
-                                    <td>" . $row['processing_date'] . "</td>
-                                    <td>" . $row['expiration_date'] . "</td>
-                                    <td>" . $row['location'] . "</td>
-                                    <td>
-                                        <button class='row-menu-btn' onclick='openEditModal(\"" . $row['batch'] . "\")'>
-                                            <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>
-                                                <circle cx='12' cy='12' r='1'></circle>
-                                                <circle cx='19' cy='12' r='1'></circle>
-                                                <circle cx='5' cy='12' r='1'></circle>
-                                            </svg>
-                                        </button>
-                                    </td>
-                                </tr>";
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        $meatClass = '';
+                        switch ($row['type']) {
+                            case 'Beef': $meatClass = 'purple'; break;
+                            case 'Chicken': $meatClass = 'pink'; break;
+                            case 'Lamb': $meatClass = 'orange'; break;
+                            case 'Pork': $meatClass = 'blue'; break;
+                            case 'Fish': $meatClass = 'green'; break;
                         }
-                    } else {
-                        // If no records, display a message
-                        echo "<tr><td colspan='7' class='text-center'>No stock data available</td></tr>";
+                        echo "<tr class='inventory-row' data-type='" . $row['type'] . "' data-batch='" . $row['batch'] . "'>
+                                <td><div class='meat-type'>
+                                        <span class='meat-indicator " . $meatClass . "'></span>" . $row['type'] . "</div></td>
+                                <td>" . $row['batch'] . "</td>
+                                <td>" . $row['quantity'] . " kg</td>
+                                <td>" . $row['processing_date'] . "</td>
+                                <td>" . $row['expiration_date'] . "</td>
+                                <td>" . $row['location'] . "</td>
+                                <td><button class='row-menu-btn' onclick='openEditModal(\"" . $row['batch'] . "\")'>
+                                    <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>
+                                        <circle cx='12' cy='12' r='1'></circle>
+                                        <circle cx='19' cy='12' r='1'></circle>
+                                        <circle cx='5' cy='12' r='1'></circle>
+                                    </svg>
+                                </button></td>
+                            </tr>";
                     }
-                    ?>
-                </tbody>
-            </table>
-        </div>
+                } else {
+                    echo "<tr><td colspan='7' class='text-center'>No stock data available</td></tr>";
+                }
+                ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- JavaScript for Real-Time Search -->
+<script>
+    // Function to filter inventory rows based on search query
+    document.getElementById('search-input').addEventListener('input', function () {
+        const searchQuery = this.value.toLowerCase();
+        const rows = document.querySelectorAll('.inventory-row');
+
+        rows.forEach(row => {
+            const batch = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+            const type = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
+            const quantity = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+            const location = row.querySelector('td:nth-child(6)').textContent.toLowerCase();
+
+            if (batch.includes(searchQuery) || type.includes(searchQuery) || quantity.includes(searchQuery) || location.includes(searchQuery)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+</script>
+
+
 
 <!-- Edit Modal -->
 <div class="modal" id="editModal">
@@ -749,14 +818,8 @@ function deleteStock() {
                 }
             });
 
-            // Inventory Breakdown Doughnut Chart
-            const breakdownCtx = document.getElementById('inventoryBreakdownChart').getContext('2d');
-            const breakdownChart = new Chart(breakdownCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Beef', 'Chicken', 'Lamb', 'Other'],
-                    datasets: [{
-                        <?php
+            // Inventory Breakdown Doughnut 
+            <?php
                     // Assuming you have a valid database connection
                     include 'includes/config.php';
 
@@ -781,8 +844,16 @@ function deleteStock() {
 
                     // Convert the PHP array to JSON and pass it to JavaScript
                     $meatDataJson = json_encode($meatData);
-                    ?>
-                        data: [45, 32, 18, 5],
+            ?>
+            const metaData = <?php echo $meatDataJson; ?>;
+            
+            const breakdownCtx = document.getElementById('inventoryBreakdownChart').getContext('2d');
+            const breakdownChart = new Chart(breakdownCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Beef', 'Chicken', 'Lamb', 'Other'],
+                    datasets: [{                        
+                        data: [metaData.Beef, metaData.Chicken, metaData.Lamb, metaData.Other],
                         backgroundColor: [
                             '#a855f7',
                             '#ec4899',
@@ -880,6 +951,9 @@ function deleteStock() {
             });
         });
     </script>
+
+
+
 
     <!-- Profile Dropdown Script -->
     <script>

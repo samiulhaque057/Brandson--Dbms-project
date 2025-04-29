@@ -133,9 +133,161 @@ if (isset($_SESSION['success_message'])) {
 
             <div class="dashboard-content">
             <!-- ///////////////////////Start Here//////////////////////////////////////////// -->
+            <?php
+require_once __DIR__ . '/includes/config.php';
+require_once __DIR__ . '/includes/functions.php';
 
-            
-            
+// Authentication check
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
+$units = getColdStorageUnits();
+$error = '';
+$success = '';
+
+// Handle form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    try {
+        // Validate and sanitize inputs
+        $eventData = [
+            'event_date' => sanitize_input($_POST['event_date']),
+            'product' => sanitize_input($_POST['product']),
+            'batch' => sanitize_input($_POST['batch']),
+            'quantity' => filter_input(INPUT_POST, 'quantity', FILTER_VALIDATE_INT),
+            'reason' => sanitize_input($_POST['reason']),
+            'value' => filter_input(INPUT_POST, 'value', FILTER_VALIDATE_FLOAT),
+            'unit_id' => filter_input(INPUT_POST, 'unit_id', FILTER_VALIDATE_INT)
+        ];
+
+        // Validate required fields
+        if (empty($eventData['event_date']) || empty($eventData['product']) ||
+            empty($eventData['batch']) || empty($eventData['quantity']) || empty($eventData['unit_id'])) {
+            throw new Exception("All fields marked with * are required");
+        }
+
+        if (save_loss_event($eventData)) {
+            $_SESSION['success_message'] = "Loss event recorded successfully!";
+            header("Location: dashboard.php");
+            exit();
+        }
+    } catch (Exception $e) {
+        $error = $e->getMessage();
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Report Loss - <?= CSM_SITE_NAME ?></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-header bg-danger text-white">
+            <h3 class="mb-0"><i class="bi bi-clipboard-x"></i> Report Product Loss</h3>
+        </div>
+
+        <div class="card-body">
+            <?php if ($error): ?>
+                <div class="alert alert-danger"><?= $error ?></div>
+            <?php endif; ?>
+
+            <form method="post" novalidate>
+                <div class="row g-3">
+                    <!-- Date Input -->
+                    <div class="col-md-6">
+                        <label class="form-label">Date of Loss <span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" name="event_date"
+                               value="<?= $_POST['event_date'] ?? '' ?>" required>
+                    </div>
+
+                    <!-- Storage Unit Selection -->
+                    <div class="col-md-6">
+                        <label class="form-label">Storage Unit <span class="text-danger">*</span></label>
+                        <select class="form-select" name="unit_id" required>
+                            <option value="">Select Storage Unit</option>
+                            <option value="1">Cold Storage A</option>
+                            <option value="2">Cold Storage B</option>
+                            <option value="3">Cold Storage C</option>
+                            <option value="4">Freezer 1</option>
+                            <option value="5">Freezer 2</option>
+                        </select>
+                    </div>
+
+                    <!-- Product Details -->
+                    <div class="col-md-4">
+                        <label class="form-label">Product Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="product"
+                               value="<?= $_POST['product'] ?? '' ?>" required>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Batch Number <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" name="batch"
+                               value="<?= $_POST['batch'] ?? '' ?>" required>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Quantity Lost <span class="text-danger">*</span></label>
+                        <input type="number" class="form-control" name="quantity"
+                               value="<?= $_POST['quantity'] ?? '' ?>" min="1" required>
+                    </div>
+
+                    <!-- Reason and Value -->
+                    <div class="col-12">
+                        <label class="form-label">Reason for Loss</label>
+                        <textarea class="form-control" name="reason" rows="3"><?= $_POST['reason'] ?? '' ?></textarea>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Estimated Value (USD)</label>
+                        <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input type="number" step="0.01" class="form-control"
+                                   name="value" value="<?= $_POST['value'] ?? '' ?>">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="mt-4 d-flex gap-2">
+                    <button type="submit" class="btn btn-danger px-4">
+                        <i class="bi bi-save"></i> Save Record
+                    </button>
+                    <a href="dashboard.php" class="btn btn-outline-secondary">
+                        <i class="bi bi-x-circle"></i> Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Bootstrap form validation
+    (function () {
+        'use strict'
+        const forms = document.querySelectorAll('.needs-validation')
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
+</script>
+
+
 
             
 

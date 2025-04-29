@@ -338,7 +338,7 @@ if (!isset($inventory)) {
                     <!-- Stock Additions Chart (Moved to top) -->
                     <div class="chart-card">
                         <div class="chart-header">
-                            <h3>Stock Additions per Month</h3>
+                            <h3>Sales per Month</h3>
                             <button class="chart-menu-btn">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <circle cx="12" cy="12" r="1"></circle>
@@ -355,7 +355,7 @@ if (!isset($inventory)) {
                     <!-- Inventory Breakdown Chart (Moved to bottom) -->
                     <div class="chart-card">
                         <div class="chart-header">
-                            <h3>Inventory Breakdown</h3>
+                            <h3>Batch Breakdown</h3>
                             <button class="chart-menu-btn">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <circle cx="12" cy="12" r="1"></circle>
@@ -823,51 +823,58 @@ function deleteStock() {
             const metaData = <?php echo $meatDataJson; ?>;
             
             const breakdownCtx = document.getElementById('inventoryBreakdownChart').getContext('2d');
-            const breakdownChart = new Chart(breakdownCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Beef', 'Chicken', 'Lamb', 'Other'],
-                    datasets: [{                        
-                        data: [metaData.Beef, metaData.Chicken, metaData.Lamb, metaData.Other],
-                        backgroundColor: [
-                            '#a855f7',
-                            '#ec4899',
-                            '#f97316',
-                            '#6b7280'
-                        ],
-                        borderWidth: 0,
-                        hoverOffset: 4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    cutout: '70%',
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                color: '#ffffff',
-                                padding: 20,
-                                usePointStyle: true,
-                                pointStyle: 'circle'
-                            }
-                        },
-                        tooltip: {
-                            backgroundColor: '#0a0a0a',
-                            titleColor: '#ffffff',
-                            bodyColor: '#ffffff',
-                            borderColor: '#333',
-                            borderWidth: 1,
-                            callbacks: {
-                                label: function(context) {
-                                    return `${context.label}: ${context.raw}%`;
-                                }
-                            }
-                        }
+const breakdownChart = new Chart(breakdownCtx, {
+    type: 'doughnut',
+    data: {
+        labels: ['Beef', 'Chicken', 'Lamb', 'Other'],
+        datasets: [{
+            data: [metaData.Beef, metaData.Chicken, metaData.Lamb, metaData.Other],
+            backgroundColor: [
+                '#a855f7',
+                '#ec4899',
+                '#f97316',
+                '#6b7280'
+            ],
+            borderWidth: 0,
+            hoverOffset: 4
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: '70%',
+        plugins: {
+            legend: {
+                position: 'bottom',
+                labels: {
+                    color: '#ffffff',
+                    padding: 20,
+                    usePointStyle: true,
+                    pointStyle: 'circle'
+                }
+            },
+            tooltip: {
+                backgroundColor: '#0a0a0a',
+                titleColor: '#ffffff',
+                bodyColor: '#ffffff',
+                borderColor: '#333',
+                borderWidth: 1,
+                callbacks: {
+                    label: function(context) {
+                        // Calculate the total value for all segments
+                        const total = context.dataset.data.reduce((sum, currentValue) => sum + currentValue, 0);
+                        
+                        // Calculate percentage for the current segment
+                        const percentage = ((context.raw / total) * 100).toFixed(2);
+                        
+                        // Return the label with the percentage
+                        return `${context.label}: ${percentage}%`;
                     }
                 }
-            });
+            }
+        }
+    }
+});
 
             // Stock Additions Bar Chart
             const stockAdditionsCtx = document.getElementById('stockAdditionsChart').getContext('2d');
@@ -876,7 +883,7 @@ function deleteStock() {
                 data: {
                     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
                     datasets: [{
-                        label: 'Stock Additions (kg)',
+                        label: 'Stock Sold (kg)',
                         data: [350, 420, 380, 500, 600, 550, 450, 580, 650, 700, 680, 550],
                         backgroundColor: '#ec4899',
                         borderRadius: 4

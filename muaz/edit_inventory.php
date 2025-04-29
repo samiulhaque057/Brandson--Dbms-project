@@ -1,14 +1,50 @@
 <?php
-include 'includes/config.php';
-include 'includes/functions.php';
 
-// Check for success message
-$success_message = '';
-if (isset($_SESSION['success_message'])) {
-    $success_message = $_SESSION['success_message'];
-    unset($_SESSION['success_message']);
+include 'includes/config.php'; // Make sure this connects $conn to your DB
+
+// Check if ID is passed
+if (!isset($_GET['id'])) {
+    echo "No inventory ID specified.";
+    exit;
+}
+
+$id = intval($_GET['id']);
+
+// Fetch inventory item for editing
+$sql = "SELECT * FROM expiring_inventory WHERE id = $id";
+$result = $conn->query($sql);
+
+if (!$result || $result->num_rows === 0) {
+    echo "Inventory item not found.";
+    exit;
+}
+
+$row = $result->fetch_assoc();
+
+// Handle update form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $product = $_POST['product'];
+    $batch = $_POST['batch'];
+    $quantity = $_POST['quantity'];
+    $expires = $_POST['expires'];
+    $storage = $_POST['storage'];
+    $status = $_POST['status'];
+
+    $updateSql = "UPDATE expiring_inventory 
+                  SET product='$product', batch='$batch', quantity='$quantity', expires='$expires', 
+                      storage='$storage', status='$status' 
+                  WHERE id = $id";
+
+    if ($conn->query($updateSql) === TRUE) {
+        header("Location: inventory.php");
+        exit;
+    } else {
+        echo "Error updating record: " . $conn->error;
+    }
 }
 ?>
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -23,10 +59,13 @@ if (isset($_SESSION['success_message'])) {
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/styles-dashboard2.css">
-
-    
+    <link rel="stylesheet" href="css/styles3.css">
 </head>
+
+
+
+
+
 <body>
     <div class="app-container">
         <!-- Sidebar -->
@@ -39,7 +78,7 @@ if (isset($_SESSION['success_message'])) {
             </div>
             
             <nav class="sidebar-nav">
-                <a href="dashboard.php" class="nav-item active">
+                <a href="dashboard.php" class="nav-item ">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
                         <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
                         <line x1="3" y1="9" x2="21" y2="9"></line>
@@ -55,7 +94,7 @@ if (isset($_SESSION['success_message'])) {
                     </svg>
                     <span class="nav-item-name">Analytics</span>
                 </a>
-                <a href="add_stock.php" class="nav-item">
+                <a href="#" class="nav-item active">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
                         <rect x="1" y="3" width="15" height="13"></rect>
                         <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
@@ -103,7 +142,7 @@ if (isset($_SESSION['success_message'])) {
                     <input type="text" placeholder="Search inventory, batches..." class="search-input">
                 </div>
                 
-                <h1 class="page-title">Dashboard</h1>
+                <h1 class="page-title"> Edit inventory</h1>
                 
                 <div class="profile-container">
                     <button id="profileButton" class="profile-button">
@@ -129,21 +168,127 @@ if (isset($_SESSION['success_message'])) {
                 </div>
             </header>
 
-            <!-- ///////////////////////Dashboard Content//////////////////////////////////////////// -->
+            <style>
+        /* Modern Add Stock Button Styles */
+        .btn-modern-add {
+            position: relative;
+            padding: 15px 30px;
+            border: none;
+            background: linear-gradient(to right, #662D91, #912D73); /* Purple Gradient */
+            color: #fff;
+            font-size: 1.2em;
+            font-weight: bold;
+            border-radius: 5px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
 
-            <div class="dashboard-content">
-            <!-- ///////////////////////Start Here//////////////////////////////////////////// -->
+        .btn-modern-add .btn-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+        }
 
-            
-            
+        .btn-modern-add .btn-glow {
+            position: absolute;
+            top: var(--y, 0);
+            left: var(--x, 0);
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            z-index: 1;
+            transition: width 0.4s ease, height 0.4s ease;
+        }
 
-            
+        .btn-modern-add:hover {
+            transform: scale(1.05);
+        }
 
+        .btn-modern-add:hover .btn-glow {
+            width: 300px;
+            height: 300px;
+        }
+    </style>
+</head>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Inventory</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles3.css">
+</head>
+<body class="bg-dark text-white">
+div class="container mt-5">
+    <h2>Edit Inventory ID: <?= $row['id'] ?></h2>
+    <form method="POST" class="mt-4">
+        <div class="mb-3">
+            <label for="product" class="form-label">Product</label>
+            <input type="text" name="product" id="product" class="form-control" value="<?= $row['product'] ?>" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="batch" class="form-label">Batch</label>
+            <input type="text" name="batch" id="batch" class="form-control" value="<?= $row['batch'] ?>" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="quantity" class="form-label">Quantity (kg)</label>
+            <input type="number" name="quantity" id="quantity" class="form-control" value="<?= $row['quantity'] ?>" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="expires" class="form-label">Expires</label>
+            <input type="date" name="expires" id="expires" class="form-control" value="<?= $row['expires'] ?>" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="storage" class="form-label">Storage</label>
+            <input type="text" name="storage" id="storage" class="form-control" value="<?= $row['storage'] ?>" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="status" class="form-label">Status</label>
+            <select name="status" id="status" class="form-control" required>
+                <option value="normal" <?= $row['status'] === 'normal' ? 'selected' : '' ?>>Normal</option>
+                <option value="urgent" <?= $row['status'] === 'urgent' ? 'selected' : '' ?>>Urgent</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-success">Update Inventory</button>
+        <a href="inventory.php" class="btn btn-secondary">Cancel</a>
+    </form>
 </div>
-
-
-
-
-                
 </body>
 </html>

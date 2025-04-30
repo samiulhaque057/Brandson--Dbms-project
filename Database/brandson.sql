@@ -60,3 +60,138 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+-- ProductSeller Table
+CREATE TABLE IF NOT EXISTS ProductSeller (
+    seller_id VARCHAR(20) PRIMARY KEY,
+    name VARCHAR(100),
+    address TEXT,
+    phone_number VARCHAR(20),
+    seller_type VARCHAR(50)
+);
+
+-- ProductType Table
+CREATE TABLE IF NOT EXISTS ProductType (
+    type_name VARCHAR(50) PRIMARY KEY,
+    description TEXT
+);
+
+-- ProductGrade Table
+CREATE TABLE IF NOT EXISTS ProductGrade (
+    grade_id VARCHAR(20) PRIMARY KEY,
+    grade VARCHAR(10),
+    nutrition_value TEXT,
+    quality_description TEXT,
+    optimum_temperature FLOAT,
+    optimum_humidity FLOAT
+);
+
+-- AgroFarm Table
+CREATE TABLE IF NOT EXISTS AgroFarm (
+    farm_id VARCHAR(20) PRIMARY KEY,
+    name VARCHAR(100),
+    location TEXT,
+    owner_id VARCHAR(20)
+);
+
+-- MeatProductBatch Table
+CREATE TABLE IF NOT EXISTS MeatProductBatch (
+    batch_id VARCHAR(20) PRIMARY KEY,
+    meat_type VARCHAR(50),
+    grade_id VARCHAR(20),
+    farm_id VARCHAR(20),
+    price DECIMAL(10,2),
+    stock INT,
+    manufacturing_date DATE,
+    expiry_date DATE,
+    batch_no VARCHAR(50),
+    slaughtering_date DATE,
+    FOREIGN KEY (meat_type) REFERENCES ProductType(type_name),
+    FOREIGN KEY (grade_id) REFERENCES ProductGrade(grade_id),
+    FOREIGN KEY (farm_id) REFERENCES AgroFarm(farm_id)
+);
+
+-- PlaceOrder Table
+CREATE TABLE IF NOT EXISTS PlaceOrder (
+    seller_id VARCHAR(20),
+    coldstorage_id VARCHAR(20),
+    PRIMARY KEY (seller_id, coldstorage_id),
+    FOREIGN KEY (seller_id) REFERENCES ProductSeller(seller_id)
+);
+
+-- Order Table
+CREATE TABLE IF NOT EXISTS `Order` (
+    order_id VARCHAR(20) PRIMARY KEY,
+    customer_id VARCHAR(20),
+    order_quantity INT,
+    status VARCHAR(50),
+    shipping_address TEXT,
+    amount DECIMAL(10,2),
+    tracking_info TEXT,
+    order_date DATE
+);
+
+-- Delivery Table
+CREATE TABLE IF NOT EXISTS Delivery (
+    delivery_id VARCHAR(20) PRIMARY KEY,
+    batch_id VARCHAR(20),
+    date DATE,
+    delivery_type VARCHAR(50),
+    FOREIGN KEY (batch_id) REFERENCES MeatProductBatch(batch_id)
+);
+-- LossRecord Table
+CREATE TABLE IF NOT EXISTS LossRecord (
+    loss_id VARCHAR(20) PRIMARY KEY,
+    batch_id VARCHAR(20),
+    stage VARCHAR(50),
+    cause TEXT,
+    date DATE,
+    quantity_lost INT,
+    remarks TEXT,
+    FOREIGN KEY (batch_id) REFERENCES MeatProductBatch(batch_id)
+);
+
+-- PreventiveAction Table
+CREATE TABLE IF NOT EXISTS PreventiveAction (
+    action_id VARCHAR(20) PRIMARY KEY,
+    loss_id VARCHAR(20),
+    action_taken TEXT,
+    responsible_person VARCHAR(100),
+    date DATE,
+    effectiveness_rating INT,
+    FOREIGN KEY (loss_id) REFERENCES LossRecord(loss_id)
+);
+
+-- ColdStorage Table
+CREATE TABLE IF NOT EXISTS ColdStorage (
+    coldstorage_id VARCHAR(20) PRIMARY KEY,
+    location TEXT,
+    capacity INT,
+    temperature_range VARCHAR(50),
+    humidity_level FLOAT,
+    product_status VARCHAR(50)
+);
+
+-- Sensor Table
+CREATE TABLE IF NOT EXISTS Sensor (
+    sensor_id VARCHAR(20) PRIMARY KEY,
+    name VARCHAR(100),
+    installation_date DATE,
+    validation VARCHAR(50)
+);
+
+-- SensorData Table
+CREATE TABLE IF NOT EXISTS SensorData (
+    data_id VARCHAR(20) PRIMARY KEY,
+    sensor_id VARCHAR(20),
+    timestamp DATETIME,
+    sensor_reading TEXT,
+    FOREIGN KEY (sensor_id) REFERENCES Sensor(sensor_id)
+);
+
+-- Transport Table
+CREATE TABLE IF NOT EXISTS Transport (
+    transport_id VARCHAR(20) PRIMARY KEY,
+    vehicle_id VARCHAR(50),
+    route_details TEXT,
+    delivery_status VARCHAR(50)
+);

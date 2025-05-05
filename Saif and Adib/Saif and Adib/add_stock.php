@@ -15,8 +15,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $processingDate = sanitize($_POST['processingDate']);
     $expirationDate = sanitize($_POST['expirationDate']);    
     $location = sanitize($_POST['location']);
-
-    
     
    
     
@@ -58,44 +56,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // If no errors, insert into database
     if (empty($errors)) {
         /////////////// Prepare the SQL query to insert data into the stockData table////////////////
-        $sql = "INSERT INTO stockData (type, batch_id, quantity, supplier, cost, processing_date, expiration_date, location) 
+        $sql = "INSERT INTO stockData (type, batch, quantity, supplier, cost, processing_date, expiration_date, location) 
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("ssdsssss", $type, $batch, $quantity, $supplier, $cost, $processingDate, $expirationDate, $location);
         $stmt->execute();
         
-    // Update the used_capacity in the cold_storages table
-    $update_sql = "UPDATE cold_storages SET used_capacity = used_capacity + ? WHERE location = ?";
-    $update_stmt = $conn->prepare($update_sql);
-    $update_stmt->bind_param("ds", $quantity, $location); // 'd' for double (quantity) and 's' for string (location)
-    $update_stmt->execute();
-
-    // Check if the update was successful
-    if ($update_stmt->affected_rows > 0) {
-        $_SESSION['success_message'] = "Stock added and used capacity updated successfully";
-    } else {
-        $_SESSION['error_message'] = "Failed to update used capacity";
+        // Set success message
+        $_SESSION['success_message'] = "Stock added successfully";
+        
+        
+        
     }
-
-    // Close the statement
-    $update_stmt->close();
-    
-    // Close the main statement
-    $stmt->close();
 }
-}
-
-// Fetch storage locations from the database
-$locations = [];
-$sql = "SELECT location FROM cold_storages"; 
-$result = $conn->query($sql);
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $locations[] = $row['location'];
-}
-$conn->close();
-}
-
 
 
 ?>
@@ -140,14 +113,14 @@ $conn->close();
                     </svg>
                     <span class="nav-item-dashboard">Dashboard</span>
                 </a>
-                <!-- <a href="analytics.php" class="nav-item">
+                <a href="analytics.php" class="nav-item">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
                         <line x1="18" y1="20" x2="18" y2="10"></line>
                         <line x1="12" y1="20" x2="12" y2="4"></line>
                         <line x1="6" y1="20" x2="6" y2="14"></line>
                     </svg>
                     <span class="nav-item-name">Analytics</span>
-                </a> -->
+                </a>
                 <a href="#" class="nav-item active">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
                         <rect x="1" y="3" width="15" height="13"></rect>
@@ -157,22 +130,15 @@ $conn->close();
                     </svg>
                     <span class="nav-item-name">Stock Entry</span>
                 </a>
-                <a href="../muaz/dashboard-template.php" class="nav-item">
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
-        <path d="M12 2C10.89 2 10 2.89 10 4V16.44C8.85 16.72 8 17.97 8 19.3C8 21.03 9.97 23 12 23C14.03 23 16 21.03 16 19.3C16 17.97 15.15 16.72 14 16.44V4C14 2.89 13.11 2 12 2ZM12 20C11.45 20 11 19.55 11 19C11 18.45 11.45 18 12 18C12.55 18 13 18.45 13 19C13 19.55 12.55 20 12 20ZM14 7H10V4C10 3.45 10.45 3 11 3C11.55 3 12 3.45 12 4V7H14V5C14 4.45 13.55 4 13 4C12.45 4 12 4.45 12 5V7Z"></path>
-    </svg>
-    <span class="nav-item-name">Cold Storage</span>
-</a>
-
-                <a href="..\jugumaya\dashboard-1.php" class="nav-item">
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
-        <path d="M10.29 3.86L3.86 10.29a2 2 0 0 0 0 2.83l6.43 6.43a2 2 0 0 0 2.83 0l6.43-6.43a2 2 0 0 0 0-2.83L13.12 3.86a2 2 0 0 0-2.83 0z" />
-        <line x1="12" y1="8" x2="12" y2="12" />
-        <line x1="12" y1="16" x2="12.01" y2="16" />
-    </svg>
-    <span class="nav-item-name">Loss Auditor</span>
-</a>
+                <a href="#" class="nav-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                    <span class="nav-item-name">Cold Storage</span>
+                </a>
                 <a href="#" class="nav-item">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
                         <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
@@ -371,79 +337,27 @@ $conn->close();
                                         </div>
 
                                         <div class="row">
-    <div class="col-md-6 mb-3">
-        <label for="location" class="form-label text-white">Storage Location <span class="text-danger">*</span></label>
-        <select class="form-select bg-dark text-white border-secondary" name="location" id="location" required>
-            <option value="">Select Storage Location</option>
-            <?php foreach ($locations as $loc): ?>
-                <option value="<?= htmlspecialchars($loc) ?>"><?= htmlspecialchars($loc) ?></option>
-            <?php endforeach; ?>
-        </select>
-    </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label for="location" class="form-label text-white">Storage Location <span class="text-danger">*</span></label>
+                                                <select class="form-select bg-dark text-white border-secondary" name="location" id="location" required>
+                                                    <option value="">Select Storage Location</option>
+                                                    <option value="Cold Storage A">Cold Storage A</option>
+                                                    <option value="Cold Storage B">Cold Storage B</option>
+                                                    <option value="Cold Storage C">Cold Storage C</option>
+                                                    <option value="Freezer 1">Freezer 1</option>
+                                                    <option value="Freezer 2">Freezer 2</option>
+                                                </select>
+                                            </div>
 
-    <div class="col-md-6 mb-3">
-        <label for="quality" class="form-label text-white">Quality Grade</label>
-        <select class="form-select bg-dark text-white border-secondary" name="quality" id="quality">
-            <option value="">Select Quality Grade</option>
-            <option value="Premium">Premium</option>
-            <option value="Standard">Standard</option>
-            <option value="Economy">Economy</option>
-        </select>
-    </div>
-
-<!-- Text Area for displaying used_capacity and total_capacity -->
-<div class="col-md-6 mb-3">
-    <label for="used_capacity" class="form-label text-white">Used Capacity</label>
-    <textarea class="form-control bg-dark text-white border-secondary" name="used_capacity" id="used_capacity" readonly></textarea>
-</div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('location').addEventListener('change', function() {
-        var location = this.value;
-
-        if (location) {
-            // Make AJAX request to get the used_capacity and total_capacity based on the selected location
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', 'get_used_capacity.php?location=' + encodeURIComponent(location), true);
-            xhr.onload = function() {
-                if (xhr.status === 200) {
-                    try {
-                        console.log(xhr.responseText);
-                        var response = JSON.parse(xhr.responseText); // Parse JSON response
-
-                        // Check if there's an error in the response
-                        if (response.error) {
-                            console.error(response.error);
-                            document.getElementById('used_capacity').value = 'Error: ' + response.error;
-                        } else {
-                            // Update the used_capacity text area with the response data
-                            var used_capacity = response.used_capacity || 'Data not available';
-                            var total_capacity = response.total_capacity || 'Data not available';
-                            document.getElementById('used_capacity').value = used_capacity + ' / ' + total_capacity + ' kg';
-                        }
-                    } catch (e) {
-                        console.error('Error parsing JSON:', e);
-                        document.getElementById('used_capacity').value = 'Invalid data received';
-                    }
-                } else {
-                    console.error('Request failed with status: ' + xhr.status);
-                    document.getElementById('used_capacity').value = 'Failed to load data';
-                }
-            };
-            xhr.send();
-        } else {
-            document.getElementById('used_capacity').value = ''; // Clear if no location selected
-        }
-    });
-});
-</script>
-
-
-                                           
-
-
-                                            
+                                            <div class="col-md-6 mb-3">
+                                                <label for="quality" class="form-label text-white">Quality Grade</label>
+                                                <select class="form-select bg-dark text-white border-secondary" name="quality" id="quality">
+                                                    <option value="">Select Quality Grade</option>
+                                                    <option value="Premium">Premium</option>
+                                                    <option value="Standard">Standard</option>
+                                                    <option value="Economy">Economy</option>
+                                                </select>
+                                            </div>
                                         </div>
 
                                         
@@ -503,7 +417,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             echo "<tr>
                                     <td class='text-white'>" . $row['date_added'] . "</td>
                                     <td class='text-white'>" . $row['type'] . "</td>
-                                    <td class='text-white'>" . $row['batch_id'] . "</td>
+                                    <td class='text-white'>" . $row['batch'] . "</td>
                                     <td class='text-white'>" . $row['quantity'] . " kg</td>
                                     <td class='text-white'>" . $row['supplier'] . "</td>
                                   </tr>";

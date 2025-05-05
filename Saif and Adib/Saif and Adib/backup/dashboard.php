@@ -59,7 +59,6 @@ if (!isset($inventory)) {
 }
 
 
-/////////////////////////////////////////////////////////////////////////
 
 
 
@@ -89,14 +88,14 @@ if (!isset($inventory)) {
                     </svg>
                     <span class="nav-item-dashboard">Dashboard</span>
                 </a>
-                <!-- <a href="analytics.php" class="nav-item">
+                <a href="analytics.php" class="nav-item">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
                         <line x1="18" y1="20" x2="18" y2="10"></line>
                         <line x1="12" y1="20" x2="12" y2="4"></line>
                         <line x1="6" y1="20" x2="6" y2="14"></line>
                     </svg>
                     <span class="nav-item-name">Analytics</span>
-                </a> -->
+                </a>
                 <a href="add_stock.php" class="nav-item">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
                         <rect x="1" y="3" width="15" height="13"></rect>
@@ -106,27 +105,15 @@ if (!isset($inventory)) {
                     </svg>
                     <span class="nav-item-name">Stock Entry</span>
                 </a>
-                <a href="../muaz/dashboard-template.php" class="nav-item">
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
-        <path d="M12 2C10.89 2 10 2.89 10 4V16.44C8.85 16.72 8 17.97 8 19.3C8 21.03 9.97 23 12 23C14.03 23 16 21.03 16 19.3C16 17.97 15.15 16.72 14 16.44V4C14 2.89 13.11 2 12 2ZM12 20C11.45 20 11 19.55 11 19C11 18.45 11.45 18 12 18C12.55 18 13 18.45 13 19C13 19.55 12.55 20 12 20ZM14 7H10V4C10 3.45 10.45 3 11 3C11.55 3 12 3.45 12 4V7H14V5C14 4.45 13.55 4 13 4C12.45 4 12 4.45 12 5V7Z"></path>
-    </svg>
-    <span class="nav-item-name">Cold Storage</span>
-</a>
-
-
-<a href="..\jugumaya\dashboard-1.php" class="nav-item">
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
-        <path d="M10.29 3.86L3.86 10.29a2 2 0 0 0 0 2.83l6.43 6.43a2 2 0 0 0 2.83 0l6.43-6.43a2 2 0 0 0 0-2.83L13.12 3.86a2 2 0 0 0-2.83 0z" />
-        <line x1="12" y1="8" x2="12" y2="12" />
-        <line x1="12" y1="16" x2="12.01" y2="16" />
-    </svg>
-    <span class="nav-item-name">Loss Auditor</span>
-</a>
-
-
-
-
+                <a href="#" class="nav-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                    <span class="nav-item-name">Cold Storage</span>
+                </a>
                 <a href="#" class="nav-item">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
                         <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
@@ -150,24 +137,38 @@ if (!isset($inventory)) {
             <!-- Header -->
             <header class="header">
             <div class="search-container" style="display: flex; align-items: center; gap: 8px; background-color: #000;">
-                    <div style="position: relative; display: flex; align-items: center;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; left: 10px; color: #888;">
-                            <circle cx="11" cy="11" r="8"></circle>
-                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                        </svg>
-                        <input type="text" id="search-input" placeholder="Search batch or type" class="search-input" style="
-                            background-color: #111;
-                            color: #fff;
-                            border: 1px solid #444;
-                            padding: 8px 12px 8px 34px;
-                            border-radius: 6px;
-                            font-size: 14px;
-                            outline: none;
-                            width: 100%;
-                            max-width: 380px; /* Adjust width as necessary */
-                        ">
-                    </div>
-                </div>
+    <div style="position: relative; display: flex; align-items: center;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; left: 10px; color: #888;">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" placeholder="Search inventory, batches..." style="
+            background-color: #111;
+            color: #fff;
+            border: 1px solid #444;
+            padding: 8px 12px 8px 34px;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+            width: 220px;
+        ">
+    </div>
+    <button style="
+        background-color: #333;
+        color: white;
+        border: 1px solid #555;
+        padding: 8px 16px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.2s, transform 0.1s;
+    " 
+    onmousedown="this.style.transform='scale(0.95)'" 
+    onmouseup="this.style.transform='scale(1)'"
+    onmouseleave="this.style.transform='scale(1)'">
+        Search
+    </button>
+</div>
 
                 
                 <h1 class="page-title">Dashboard</h1>
@@ -351,7 +352,7 @@ if (!isset($inventory)) {
                     <!-- Stock Additions Chart (Moved to top) -->
                     <div class="chart-card">
                         <div class="chart-header">
-                            <h3>Stock addition chart</h3>
+                            <h3>Stock Additions per Month</h3>
                             <button class="chart-menu-btn">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <circle cx="12" cy="12" r="1"></circle>
@@ -365,13 +366,10 @@ if (!isset($inventory)) {
                         </div>
                     </div>
 
-
-                    
-
                     <!-- Inventory Breakdown Chart (Moved to bottom) -->
                     <div class="chart-card">
                         <div class="chart-header">
-                            <h3>Batch Breakdown</h3>
+                            <h3>Inventory Breakdown</h3>
                             <button class="chart-menu-btn">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <circle cx="12" cy="12" r="1"></circle>
@@ -413,68 +411,72 @@ if (!isset($inventory)) {
         </div>
     </div>
 
+    <!-- Search Input -->
+    <div class="table-responsive">
+    <input type="text" id="search-input" placeholder="Search inventory, batches..." class="search-input" style="
+    background-color: #111;
+    color: #fff;
+    border: 1px solid #444; /* Added border */
+    padding: 8px 12px 8px 34px;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+    width: 100%;
+">
 
+        <table class="inventory-table">
+            <thead>
+                <tr>
+                    <th>Meat Type</th>
+                    <th>Batch #</th>
+                    <th>Quantity (kg)</th>
+                    <th>Processing Date</th>
+                    <th>Expiration Date</th>
+                    <th>Storage Location</th>
+                    <th>Actions</th> <!-- Actions column for the edit button -->
+                </tr>
+            </thead>
+            <tbody id="inventory-table-body">
+                <?php
+                include 'includes/config.php';
 
-    <table class="inventory-table">
-    <thead>
-        <tr>
-            <th>Meat Type</th>
-            <th>Batch #</th>
-            <th>Quantity (kg)</th>
-            <th>Processing Date</th>
-            <th>Expiration Date</th>
-            <th>Storage Location</th>
-            <th>Total Cost</th> <!-- New column -->
-            <th>Actions</th> <!-- Actions column for the edit button -->
-        </tr>
-    </thead>
-    <tbody id="inventory-table-body">
-        <?php
-        include 'includes/config.php';
+                // Fetch all inventory data from the database
+                $sql = "SELECT batch, type, quantity, processing_date, expiration_date, location FROM stockData ORDER BY date_added DESC";
+                $result = $conn->query($sql);
 
-        // Fetch all inventory data from the database, including cost
-        $sql = "SELECT batch_id, type, quantity, processing_date, expiration_date, location, cost FROM stockData ORDER BY date_added DESC";
-        $result = $conn->query($sql);
-
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                $meatClass = '';
-                switch ($row['type']) {
-                    case 'Beef': $meatClass = 'purple'; break;
-                    case 'Chicken': $meatClass = 'pink'; break;
-                    case 'Lamb': $meatClass = 'orange'; break;
-                    case 'Pork': $meatClass = 'blue'; break;
-                    case 'Fish': $meatClass = 'green'; break;
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        $meatClass = '';
+                        switch ($row['type']) {
+                            case 'Beef': $meatClass = 'purple'; break;
+                            case 'Chicken': $meatClass = 'pink'; break;
+                            case 'Lamb': $meatClass = 'orange'; break;
+                            case 'Pork': $meatClass = 'blue'; break;
+                            case 'Fish': $meatClass = 'green'; break;
+                        }
+                        echo "<tr class='inventory-row' data-type='" . $row['type'] . "' data-batch='" . $row['batch'] . "'>
+                                <td><div class='meat-type'>
+                                        <span class='meat-indicator " . $meatClass . "'></span>" . $row['type'] . "</div></td>
+                                <td>" . $row['batch'] . "</td>
+                                <td>" . $row['quantity'] . " kg</td>
+                                <td>" . $row['processing_date'] . "</td>
+                                <td>" . $row['expiration_date'] . "</td>
+                                <td>" . $row['location'] . "</td>
+                                <td><button class='row-menu-btn' onclick='openEditModal(\"" . $row['batch'] . "\")'>
+                                    <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>
+                                        <circle cx='12' cy='12' r='1'></circle>
+                                        <circle cx='19' cy='12' r='1'></circle>
+                                        <circle cx='5' cy='12' r='1'></circle>
+                                    </svg>
+                                </button></td>
+                            </tr>";
+                    }
+                } else {
+                    echo "<tr><td colspan='7' class='text-center'>No stock data available</td></tr>";
                 }
-
-                // Calculate total cost
-                $totalCost = $row['quantity'] * $row['cost'];
-
-                echo "<tr class='inventory-row' data-type='" . $row['type'] . "' data-batch='" . $row['batch_id'] . "'>
-                        <td><div class='meat-type'>
-                                <span class='meat-indicator " . $meatClass . "'></span>" . $row['type'] . "</div></td>
-                        <td>" . $row['batch_id'] . "</td>
-                        <td>" . $row['quantity'] . " kg</td>
-                        <td>" . $row['processing_date'] . "</td>
-                        <td>" . $row['expiration_date'] . "</td>
-                        <td>" . $row['location'] . "</td>
-                        <td>$" . number_format($totalCost, 2) . "</td>
-                        <td><button class='row-menu-btn' onclick='openEditModal(\"" . $row['batch_id'] . "\")'>
-                            <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>
-                                <circle cx='12' cy='12' r='1'></circle>
-                                <circle cx='19' cy='12' r='1'></circle>
-                                <circle cx='5' cy='12' r='1'></circle>
-                            </svg>
-                        </button></td>
-                    </tr>";
-            }
-        } else {
-            echo "<tr><td colspan='8' class='text-center'>No stock data available</td></tr>";
-        }
-        ?>
-    </tbody>
-</table>
-
+                ?>
+            </tbody>
+        </table>
     </div>
 </div>
 
@@ -846,58 +848,51 @@ function deleteStock() {
             const metaData = <?php echo $meatDataJson; ?>;
             
             const breakdownCtx = document.getElementById('inventoryBreakdownChart').getContext('2d');
-const breakdownChart = new Chart(breakdownCtx, {
-    type: 'doughnut',
-    data: {
-        labels: ['Beef', 'Chicken', 'Lamb', 'Other'],
-        datasets: [{
-            data: [metaData.Beef, metaData.Chicken, metaData.Lamb, metaData.Other],
-            backgroundColor: [
-                '#a855f7',
-                '#ec4899',
-                '#f97316',
-                '#6b7280'
-            ],
-            borderWidth: 0,
-            hoverOffset: 4
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        cutout: '70%',
-        plugins: {
-            legend: {
-                position: 'bottom',
-                labels: {
-                    color: '#ffffff',
-                    padding: 20,
-                    usePointStyle: true,
-                    pointStyle: 'circle'
-                }
-            },
-            tooltip: {
-                backgroundColor: '#0a0a0a',
-                titleColor: '#ffffff',
-                bodyColor: '#ffffff',
-                borderColor: '#333',
-                borderWidth: 1,
-                callbacks: {
-                    label: function(context) {
-                        // Calculate the total value for all segments
-                        const total = context.dataset.data.reduce((sum, currentValue) => sum + currentValue, 0);
-                        
-                        // Calculate percentage for the current segment
-                        const percentage = ((context.raw / total) * 100).toFixed(2);
-                        
-                        // Return the label with the percentage
-                        return `${context.label}: ${percentage}%`;
+            const breakdownChart = new Chart(breakdownCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Beef', 'Chicken', 'Lamb', 'Other'],
+                    datasets: [{                        
+                        data: [metaData.Beef, metaData.Chicken, metaData.Lamb, metaData.Other],
+                        backgroundColor: [
+                            '#a855f7',
+                            '#ec4899',
+                            '#f97316',
+                            '#6b7280'
+                        ],
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#ffffff',
+                                padding: 20,
+                                usePointStyle: true,
+                                pointStyle: 'circle'
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: '#0a0a0a',
+                            titleColor: '#ffffff',
+                            bodyColor: '#ffffff',
+                            borderColor: '#333',
+                            borderWidth: 1,
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.label}: ${context.raw}%`;
+                                }
+                            }
+                        }
                     }
                 }
-            }
-        }
-    }
-});
+            });
 
             // Stock Additions Bar Chart
             const stockAdditionsCtx = document.getElementById('stockAdditionsChart').getContext('2d');
@@ -906,7 +901,7 @@ const breakdownChart = new Chart(breakdownCtx, {
                 data: {
                     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
                     datasets: [{
-                        label: 'Stock Sold (kg)',
+                        label: 'Stock Additions (kg)',
                         data: [350, 420, 380, 500, 600, 550, 450, 580, 650, 700, 680, 550],
                         backgroundColor: '#ec4899',
                         borderRadius: 4
@@ -956,86 +951,6 @@ const breakdownChart = new Chart(breakdownCtx, {
             });
         });
     </script>
-
-
-
-
-
-<script>
-// PHP injected data
-var labels = <?php echo $labelsJson; ?>;
-var temperatureData = <?php echo $temperaturesJson; ?>;
-var humidityData = <?php echo $humiditiesJson; ?>;
-
-// Temperature Chart
-var ctxTemp = document.getElementById('temperatureChart').getContext('2d');
-var temperatureChart = new Chart(ctxTemp, {
-    type: 'line',
-    data: {
-        labels: labels,
-        datasets: [{
-            label: 'Temperature (°C)',
-            data: temperatureData,
-            borderColor: 'rgb(255, 99, 132)',
-            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-            fill: true
-        }]
-    },
-    options: {
-        responsive: true,
-        scales: {
-            x: {
-                title: {
-                    display: true,
-                    text: 'Cold Storage'
-                }
-            },
-            y: {
-                title: {
-                    display: true,
-                    text: 'Temperature (°C)'
-                }
-            }
-        }
-    }
-});
-
-// Humidity Chart
-var ctxHum = document.getElementById('humidityChart').getContext('2d');
-var humidityChart = new Chart(ctxHum, {
-    type: 'line',
-    data: {
-        labels: labels,
-        datasets: [{
-            label: 'Humidity (%)',
-            data: humidityData,
-            borderColor: 'rgb(54, 162, 235)',
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            fill: true
-        }]
-    },
-    options: {
-        responsive: true,
-        scales: {
-            x: {
-                title: {
-                    display: true,
-                    text: 'Cold Storage'
-                }
-            },
-            y: {
-                title: {
-                    display: true,
-                    text: 'Humidity (%)'
-                }
-            }
-        }
-    }
-});
-</script>
-
-
-
 
 
 

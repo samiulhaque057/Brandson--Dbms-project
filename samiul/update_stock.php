@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $location = $data['location'];
 
         // Update query
-        $sql = "UPDATE stockData SET quantity = ?, processing_date = ?, expiration_date = ?, location = ? WHERE batch = ?";
+        $sql = "UPDATE stockData SET quantity = ?, processing_date = ?, expiration_date = ?, location = ? WHERE batch_id = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("sssss", $quantity, $processingDate, $expirationDate, $location, $batch);
 

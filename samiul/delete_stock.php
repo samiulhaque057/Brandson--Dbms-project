@@ -24,7 +24,7 @@ if (isset($data['batch'])) {
     $batch = $data['batch']; // Use the batch from the decoded JSON data
 
     // SQL DELETE query
-    $sql = "DELETE FROM stockData WHERE batch = ?";
+    $sql = "DELETE FROM stockData WHERE batch_id = ?";
 
     // Prepare and execute the query
     if ($stmt = $conn->prepare($sql)) {

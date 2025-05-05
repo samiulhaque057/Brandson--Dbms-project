@@ -9,7 +9,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
     $id = sanitize($_GET['id']); // Sanitize the ID
 
     // Prepare the SQL query to delete from the loststock table
-    $sql = "DELETE FROM loststock WHERE id = ?";
+    $sql = "DELETE FROM loststock WHERE loss_id = ?";
 
     // Use prepared statement for security
     if ($stmt = $conn->prepare($sql)) {

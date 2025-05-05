@@ -119,7 +119,7 @@ foreach($chartLabels as $label) {
 // --- Data Fetching for the Table ---
 
 // Define base SQL query for the table data from loststock table
-$sqlTable = "SELECT id, date_time, facility, stage, product_type, quantity_lost, loss_reason FROM loststock";
+$sqlTable = "SELECT loss_id, date_time, facility, stage, product_type, quantity_lost, loss_reason FROM loststock";
 
 // Use the same filtering logic as the aggregate query, including the search term
 $where_clauses_table = [];
@@ -538,8 +538,8 @@ $conn->close(); // Close connection at the very end of the script
                                     <td><?= htmlspecialchars(number_format($row["quantity_lost"], 2)) ?> kg</td>
                                     <td><?= htmlspecialchars($row["loss_reason"]) ?></td>
                                     <td>
-                                        <a href='editloss.php?id=<?= htmlspecialchars($row['id']) ?>' class='btn btn-sm btn-warning me-1'><i class='bi bi-pencil'></i> Edit</a>
-                                        <button type='button' class='btn btn-sm btn-danger' onclick='confirmDelete(<?= htmlspecialchars($row['id']) ?>)'><i class='bi bi-trash'></i> Delete</button>
+                                        <a href='editloss.php?id=<?= htmlspecialchars($row['loss_id']) ?>' class='btn btn-sm btn-warning me-1'><i class='bi bi-pencil'></i> Edit</a>
+                                        <button type='button' class='btn btn-sm btn-danger' onclick='confirmDelete(<?= htmlspecialchars($row['loss_id']) ?>)'><i class='bi bi-trash'></i> Delete</button>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

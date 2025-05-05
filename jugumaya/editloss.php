@@ -320,13 +320,7 @@ $conn->close();
                         <div class="card bg-dark border-secondary mb-4">
                             <div class="card-header bg-dark ">
                                 <ul class="nav nav-tabs card-header-tabs">
-<<<<<<< HEAD
                                     
-=======
-                                    <li class="nav-item">
-                                        <a class="nav-link active text-white" href="#">Edit Loss Entry</a>
-                                    </li>
->>>>>>> 3bce404d4f3224ab9ff85b4244ea11e36cc83cdc
                                 </ul>
                             </div>
                             <div class="card-body p-4">

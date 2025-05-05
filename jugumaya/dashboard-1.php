@@ -205,11 +205,7 @@ $conn->close(); // Close connection at the very end of the script
 </head>
 <body>
     <div class="app-container">
-<<<<<<< HEAD
         <!-- Sidebar -->
-=======
-        <?php // include 'includes/sidebar.php'; ?>
->>>>>>> 3bce404d4f3224ab9ff85b4244ea11e36cc83cdc
         <aside class="sidebar">
             <div class="sidebar-header">
                 <div class="logo">
@@ -217,15 +213,9 @@ $conn->close(); // Close connection at the very end of the script
                     <span class="brand-name">Brandson</span>
                 </div>
             </div>
-<<<<<<< HEAD
             
             <nav class="sidebar-nav">
                 <a href="../samiul/dashboard.php" class="nav-item ">
-=======
-
-            <nav class="sidebar-nav">
-                <a href="dashboard-1.php" class="nav-item active">
->>>>>>> 3bce404d4f3224ab9ff85b4244ea11e36cc83cdc
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
                         <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
                         <line x1="3" y1="9" x2="21" y2="9"></line>
@@ -233,31 +223,21 @@ $conn->close(); // Close connection at the very end of the script
                     </svg>
                     <span class="nav-item-dashboard">Dashboard</span>
                 </a>
-<<<<<<< HEAD
                 <!-- <a href="analytics.php" class="nav-item">
-=======
-                <a href="analytics.php" class="nav-item">
->>>>>>> 3bce404d4f3224ab9ff85b4244ea11e36cc83cdc
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
                         <line x1="18" y1="20" x2="18" y2="10"></line>
                         <line x1="12" y1="20" x2="12" y2="4"></line>
                         <line x1="6" y1="20" x2="6" y2="14"></line>
                     </svg>
                     <span class="nav-item-name">Analytics</span>
-<<<<<<< HEAD
                 </a> -->
                 <a href="../samiul/add_stock.php" class="nav-item">
-=======
-                </a>
-                <a href="add_stock.php" class="nav-item">
->>>>>>> 3bce404d4f3224ab9ff85b4244ea11e36cc83cdc
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
                         <rect x="1" y="3" width="15" height="13"></rect>
                         <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
                         <circle cx="5.5" cy="18.5" r="2.5"></circle>
                         <circle cx="18.5" cy="18.5" r="2.5"></circle>
                     </svg>
-<<<<<<< HEAD
                     <span class="nav-item-name">Stock Entry</span>
                 </a>
                 <a href="../muaz/dashboard-template.php" class="nav-item">
@@ -281,19 +261,6 @@ $conn->close(); // Close connection at the very end of the script
 
 
 
-=======
-                    <span class="nav-item-name">Loss Entry</span>
-                </a>
-                <a href="#" class="nav-item">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
-                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                        <line x1="16" y1="2" x2="16" y2="6"></line>
-                        <line x1="8" y1="2" x2="8" y2="6"></line>
-                        <line x1="3" y1="10" x2="21" y2="10"></line>
-                    </svg>
-                    <span class="nav-item-name">Cold Storage</span>
-                </a>
->>>>>>> 3bce404d4f3224ab9ff85b4244ea11e36cc83cdc
                 <a href="#" class="nav-item">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
                         <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
@@ -311,11 +278,7 @@ $conn->close(); // Close connection at the very end of the script
                 </a>
             </nav>
         </aside>
-<<<<<<< HEAD
             
-=======
-
->>>>>>> 3bce404d4f3224ab9ff85b4244ea11e36cc83cdc
 
         <main class="main-content">
             <?php // include 'includes/header.php'; ?>
@@ -344,11 +307,7 @@ $conn->close(); // Close connection at the very end of the script
 
                 </form>
                 
-<<<<<<< HEAD
                 <h1 class="page-title">Loss Auditor</h1>
-=======
-                <h1 class="page-title">LossAuditor</h1>
->>>>>>> 3bce404d4f3224ab9ff85b4244ea11e36cc83cdc
                 <div class="profile-container">
                     <button id="profileButton" class="profile-button">
                         <div class="profile-avatar">JD</div>
@@ -492,7 +451,6 @@ $conn->close(); // Close connection at the very end of the script
                 </script>
             </section>
 
-<<<<<<< HEAD
             
 
 
@@ -556,8 +514,6 @@ $conn->close(); // Close connection at the very end of the script
 </div>
 
 
-=======
->>>>>>> 3bce404d4f3224ab9ff85b4244ea11e36cc83cdc
             <section class="table-responsive p-3">
                 <table class="table table-striped">
                     <thead>

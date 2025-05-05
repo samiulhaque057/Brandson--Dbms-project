@@ -1,25 +1,19 @@
 <?php
-require 'includes/db_Connection.php';
-
-function getColdStorages($limit = 10) {
+function getColdStorages() {
     global $pdo;
-
+    
     try {
-        // Prepare a query to fetch cold storages, with a limit on number of records
-        $stmt = $pdo->prepare("SELECT * FROM cold_storages ORDER BY created_at DESC LIMIT :limit");
+        $stmt = $pdo->query("
+            SELECT cs.coldstorage_id, cs.location, cs.total_capacity, cs.used_capacity, cs.status, 
+                   s.temperature as current_temp, s.humidity, s.sensor_name, s.sensor_id
+            FROM cold_storages cs
+            LEFT JOIN sensor s ON cs.sensor_id = s.sensor_id
+            ORDER BY cs.coldstorage_id ASC
+        ");
         
-        // Bind the limit parameter to prevent SQL injection
-        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
-        
-        // Execute the statement
-        $stmt->execute();
-        
-        // Fetch all results and return as an associative array
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
     } catch (PDOException $e) {
-        // Error handling
-        echo "Error: " . $e->getMessage();
+        // Log error or handle it appropriately
         return [];
     }
 }

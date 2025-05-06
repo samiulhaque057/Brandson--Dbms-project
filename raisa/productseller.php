@@ -224,7 +224,7 @@ if (isset($_SESSION['success_message'])) {
                 }
 
                 $placed_orders = [];
-                $sql_placed_orders = "SELECT id, order_id, customer_name, item_name, quantity, status FROM orders WHERE status = 'Pending' ORDER BY order_date DESC"; // Select necessary columns
+                $sql_placed_orders = "SELECT  order_id, customer_id, type, quantity, status FROM orders WHERE status = 'Pending' ORDER BY order_date DESC"; // Select necessary columns
                 $result_placed_orders = $conn->query($sql_placed_orders);
 
                 if ($result_placed_orders) {
@@ -239,7 +239,7 @@ if (isset($_SESSION['success_message'])) {
                 }
 
                 $delivered_orders = [];
-                $sql_delivered_orders = "SELECT id, order_id, customer_name, item_name, quantity, status FROM orders WHERE status = 'Delivered' ORDER BY order_date DESC"; // Select necessary columns
+                $sql_delivered_orders = "SELECT  order_id, customer_id, type, quantity, status FROM orders WHERE status = 'Delivered' ORDER BY order_date DESC"; // Select necessary columns
                 $result_delivered_orders = $conn->query($sql_delivered_orders);
 
                 if ($result_delivered_orders) {

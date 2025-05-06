@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: May 05, 2025 at 07:13 PM
+-- Generation Time: May 06, 2025 at 11:36 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -44,8 +44,13 @@ CREATE TABLE `cold_storages` (
 --
 
 INSERT INTO `cold_storages` (`coldstorage_id`, `location`, `total_capacity`, `used_capacity`, `current_temp`, `humidity`, `status`, `created_at`, `sensor_id`) VALUES
-(16, 'cold', 534.00, 44.00, 0.00, 0.00, 'normal', '2025-05-05 15:04:23', 45),
-(17, 'Cold Storage A66', 654.00, 6.00, 0.00, 0.00, 'normal', '2025-05-05 15:05:02', 567);
+(101, 'Cold Storage A', 1000.00, 600.00, 3.50, 65.00, 'normal', '2025-05-06 02:00:00', 2001),
+(102, 'Cold Storage B', 950.00, 450.00, 2.00, 70.00, 'normal', '2025-05-06 02:10:00', 2002),
+(103, 'Cold Storage C', 1200.00, 1100.00, -1.00, 60.00, '', '2025-05-06 02:20:00', 2003),
+(104, 'Cold Storage D', 800.00, 300.00, 4.00, 68.00, 'normal', '2025-05-06 02:30:00', 2004),
+(105, 'Cold Storage E', 1100.00, 1090.00, -5.00, 55.00, 'critical', '2025-05-06 02:40:00', 2005),
+(106, 'Cold Storage F', 980.00, 500.00, 1.50, 63.00, 'normal', '2025-05-06 02:50:00', 2006),
+(107, 'Cold Storage G', 1050.00, 750.00, 3.00, 67.00, 'normal', '2025-05-06 03:00:00', 2007);
 
 -- --------------------------------------------------------
 
@@ -91,6 +96,18 @@ CREATE TABLE `inventory` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `loss_auditor_record_loss`
+--
+
+CREATE TABLE `loss_auditor_record_loss` (
+  `auditor_id` int(11) NOT NULL,
+  `transport_id` int(11) NOT NULL,
+  `loss_description` varchar(1111) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `loststock`
 --
 
@@ -114,7 +131,7 @@ INSERT INTO `loststock` (`loss_id`, `date_time`, `facility`, `stage`, `product_t
 (14, '2025-04-30 12:01:00', 'no', 'Storage', 'Poultry', 0.01, 'vv', '', '2025-04-30 19:01:17'),
 (15, '2025-04-30 12:23:00', 'no', 'Handling', 'Lamb', 0.01, 'koooo', '', '2025-04-30 19:23:36'),
 (32, '2025-05-08 17:18:00', 'bbbbbb', 'Slaughter', 'Beef', 33.00, '33', '', '2025-05-05 11:18:57'),
-(34, '2025-05-09 17:54:00', 'aaa', 'Processing', 'aa', 2.00, '222', NULL, '2025-05-05 11:54:47');
+(35, '2025-05-04 23:38:00', 'saaaaaaaaaaaaaaaaaaa', 'Processing', 'Beef', 543.00, 'ddd', '', '2025-05-05 17:38:33');
 
 -- --------------------------------------------------------
 
@@ -123,11 +140,9 @@ INSERT INTO `loststock` (`loss_id`, `date_time`, `facility`, `stage`, `product_t
 --
 
 CREATE TABLE `orders` (
-  `id` int(11) NOT NULL,
   `order_id` varchar(50) NOT NULL,
-  `customer_name` varchar(255) NOT NULL,
-  `item_name` varchar(255) NOT NULL,
-  `item_id` int(11) DEFAULT NULL,
+  `customer_id` varchar(255) NOT NULL,
+  `type` varchar(30) DEFAULT NULL,
   `quantity` int(11) NOT NULL,
   `status` enum('Pending','Processing','Delivered','Cancelled') DEFAULT 'Pending',
   `order_date` timestamp NOT NULL DEFAULT current_timestamp()
@@ -147,6 +162,18 @@ CREATE TABLE `post_harvest_loss` (
   `loss_date` date NOT NULL,
   `action_taken` varchar(255) DEFAULT NULL,
   `improvement_notes` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `preventive_measures`
+--
+
+CREATE TABLE `preventive_measures` (
+  `loss_id` int(11) DEFAULT NULL,
+  `measure_description` varchar(1000) DEFAULT NULL,
+  `implementation_date` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -178,12 +205,20 @@ CREATE TABLE `sensor` (
 --
 
 INSERT INTO `sensor` (`sensor_id`, `temperature`, `humidity`, `sensor_name`) VALUES
-(33, 3, 3, '3'),
-(45, 4, 4, 'fgewa'),
-(333, 3, 3, 'fs'),
-(523, 5, 5, '523'),
-(567, 5, 55, 'hdtr'),
-(3352, 3, 3, 'gasre');
+(101, 3, 65, 'Sensor A'),
+(102, 2, 70, 'Sensor B'),
+(103, -1, 60, 'Sensor C'),
+(104, 4, 68, 'Sensor D'),
+(105, -5, 55, 'Sensor E'),
+(106, 1, 63, 'Sensor F'),
+(107, 3, 67, 'Sensor G'),
+(2001, 3, 65, 'Sensor A'),
+(2002, 2, 70, 'Sensor B'),
+(2003, -1, 60, 'Sensor C'),
+(2004, 4, 68, 'Sensor D'),
+(2005, -5, 55, 'Sensor E'),
+(2006, 1, 63, 'Sensor F'),
+(2007, 3, 67, 'Sensor G');
 
 -- --------------------------------------------------------
 
@@ -201,46 +236,26 @@ CREATE TABLE `stockdata` (
   `expiration_Date` date NOT NULL,
   `location` varchar(255) NOT NULL,
   `date_added` timestamp NOT NULL DEFAULT current_timestamp(),
-  `coldstorage_id` int(11) DEFAULT NULL
+  `coldstorage_id` int(11) DEFAULT NULL,
+  `farm_manager_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `stockdata`
 --
 
-INSERT INTO `stockdata` (`batch_id`, `type`, `quantity`, `supplier`, `cost`, `processing_date`, `expiration_Date`, `location`, `date_added`, `coldstorage_id`) VALUES
-('2261', 'Beef', 44.00, '4', 4.00, '2025-05-03', '2025-06-02', 'Cold Storage Bdddddddddd', '2025-05-03 21:40:00', NULL),
-('3948', 'Beef', 22.00, 'sam', 2.00, '2025-04-23', '2025-05-23', 'Cold Storage B', '2025-04-23 06:15:50', NULL),
-('4261', 'Chicken', 8.00, '2', 2.00, '2025-04-23', '2025-03-05', 'Cold Storage B', '2025-04-23 06:16:11', NULL),
-('5148', 'Beef', 500.00, 'sam', 5.00, '2025-04-29', '2025-05-29', 'Cold Storage B', '2025-04-29 16:30:13', NULL),
-('7342', 'Beef', 2.00, '3', 3.00, '2025-05-05', '2025-06-05', 'Cold Storage C', '2025-05-05 10:13:08', NULL),
-('9091', 'Beef', 22.00, '2', 2.00, '2025-04-29', '2025-05-29', 'Cold Storage B', '2025-04-29 12:24:56', NULL),
-('9569', 'Beef', 55.00, '33', 3.00, '2025-05-04', '2025-06-03', 'Cold Storage D', '2025-05-04 10:17:58', NULL);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `storage_zones`
---
-
-CREATE TABLE `storage_zones` (
-  `zone_id` int(11) NOT NULL,
-  `zone_name` varchar(100) NOT NULL,
-  `target_temp_min` decimal(5,2) DEFAULT -20.00,
-  `target_temp_max` decimal(5,2) DEFAULT -17.00,
-  `target_humidity_min` decimal(5,2) DEFAULT 85.00,
-  `target_humidity_max` decimal(5,2) DEFAULT 92.00,
-  `total_capacity_kg` decimal(10,2) DEFAULT 10000.00
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `storage_zones`
---
-
-INSERT INTO `storage_zones` (`zone_id`, `zone_name`, `target_temp_min`, `target_temp_max`, `target_humidity_min`, `target_humidity_max`, `total_capacity_kg`) VALUES
-(1, 'Zone A', -20.00, -17.00, 85.00, 92.00, 15000.00),
-(2, 'Zone B', -20.00, -17.00, 85.00, 92.00, 10000.00),
-(3, 'Zone C', -18.00, -15.00, 88.00, 95.00, 5000.00);
+INSERT INTO `stockdata` (`batch_id`, `type`, `quantity`, `supplier`, `cost`, `processing_date`, `expiration_Date`, `location`, `date_added`, `coldstorage_id`, `farm_manager_id`) VALUES
+('10001', 'Lamb', 120.00, 'Supplier D', 6.00, '2025-05-06', '2025-06-30', 'Cold Storage D', '2025-05-06 20:52:37', 104, NULL),
+('10002', 'Lamb', 75.00, 'Supplier E', 4.50, '2025-05-06', '2025-06-20', 'Cold Storage E', '2025-05-06 20:52:37', 105, NULL),
+('10003', 'Lamb', 200.00, 'Supplier F', 7.20, '2025-05-06', '2025-07-10', 'Cold Storage F', '2025-05-06 20:52:37', 106, NULL),
+('10004', 'Lamb', 95.00, 'Supplier G', 5.50, '2025-05-06', '2025-07-01', 'Cold Storage G', '2025-05-06 20:52:37', 107, NULL),
+('2261', 'Beef', 44.00, 'Supplier A', 4.00, '2025-05-03', '2025-06-02', 'Cold Storage B', '2025-05-03 21:40:00', 102, NULL),
+('2572', 'Chicken', 555.00, 'Samiul', 5.00, '2025-05-05', '2025-06-04', 'Cold Storage A', '2025-05-05 17:32:39', 101, NULL),
+('3948', 'Beef', 22.00, 'Sam', 2.00, '2025-04-23', '2025-05-23', 'Cold Storage B', '2025-04-23 06:15:50', 102, NULL),
+('4261', 'Chicken', 8.00, 'Supplier B', 2.00, '2025-04-23', '2025-05-23', 'Cold Storage B', '2025-04-23 06:16:11', 102, NULL),
+('5148', 'Beef', 500.00, 'Sam', 5.00, '2025-04-29', '2025-05-29', 'Cold Storage B', '2025-04-29 16:30:13', 102, NULL),
+('7342', 'Beef', 2.00, 'Supplier C', 3.00, '2025-05-05', '2025-06-05', 'Cold Storage C', '2025-05-05 10:13:08', 103, NULL),
+('9091', 'Beef', 22.00, 'Supplier B', 2.00, '2025-04-29', '2025-05-29', 'Cold Storage B', '2025-04-29 12:24:56', 102, NULL);
 
 -- --------------------------------------------------------
 
@@ -263,10 +278,10 @@ CREATE TABLE `transport` (
 --
 
 INSERT INTO `transport` (`transport_id`, `meat_type`, `meat_quantity`, `start_location`, `end_location`, `tracking_number`, `sensor_id`) VALUES
-(222, 'beef', 22.00, 'ddew', 'e', '3', 33),
-(333, 'chicken', 3.00, 'few', 'fwe', '532', 3352),
-(342, 'CHI', 45.00, 'GFAWE', 'GFAEW', '4532', 523),
-(532, 'gfewa', 33.00, 'few', 'da', '324233', 333);
+(222, 'Beef', 22.00, 'Bashundhara', 'Dhanmondi', '3', 102),
+(333, 'Chicken', 3.00, 'Noakhali', 'Cumilla', '532', 101),
+(342, 'Chicken', 45.00, 'Rajshahi', 'Bogura', '4532', 102),
+(532, 'Beef', 33.00, 'Dhaka', 'Ctg', '324233', 103);
 
 -- --------------------------------------------------------
 
@@ -340,21 +355,16 @@ ALTER TABLE `sensor`
 --
 ALTER TABLE `stockdata`
   ADD PRIMARY KEY (`batch_id`),
-  ADD KEY `fk_coldstorage_id` (`coldstorage_id`);
-
---
--- Indexes for table `storage_zones`
---
-ALTER TABLE `storage_zones`
-  ADD PRIMARY KEY (`zone_id`),
-  ADD UNIQUE KEY `zone_name` (`zone_name`);
+  ADD KEY `fk_coldstorage_id` (`coldstorage_id`),
+  ADD KEY `agro_fk` (`farm_manager_id`);
 
 --
 -- Indexes for table `transport`
 --
 ALTER TABLE `transport`
   ADD PRIMARY KEY (`transport_id`),
-  ADD UNIQUE KEY `tracking_number` (`tracking_number`);
+  ADD UNIQUE KEY `tracking_number` (`tracking_number`),
+  ADD KEY `sensor_fk` (`sensor_id`);
 
 --
 -- Indexes for table `user`
@@ -370,7 +380,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `cold_storages`
 --
 ALTER TABLE `cold_storages`
-  MODIFY `coldstorage_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `coldstorage_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
 
 --
 -- AUTO_INCREMENT for table `expiring_inventory`
@@ -382,7 +392,7 @@ ALTER TABLE `expiring_inventory`
 -- AUTO_INCREMENT for table `loststock`
 --
 ALTER TABLE `loststock`
-  MODIFY `loss_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `loss_id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `post_harvest_loss`
@@ -395,12 +405,6 @@ ALTER TABLE `post_harvest_loss`
 --
 ALTER TABLE `products`
   MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `storage_zones`
---
-ALTER TABLE `storage_zones`
-  MODIFY `zone_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `transport`
@@ -434,7 +438,14 @@ ALTER TABLE `post_harvest_loss`
 -- Constraints for table `stockdata`
 --
 ALTER TABLE `stockdata`
+  ADD CONSTRAINT `agro_fk` FOREIGN KEY (`farm_manager_id`) REFERENCES `user` (`id`),
   ADD CONSTRAINT `fk_coldstorage_id` FOREIGN KEY (`coldstorage_id`) REFERENCES `cold_storages` (`coldstorage_id`);
+
+--
+-- Constraints for table `transport`
+--
+ALTER TABLE `transport`
+  ADD CONSTRAINT `sensor_fk` FOREIGN KEY (`sensor_id`) REFERENCES `sensor` (`sensor_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

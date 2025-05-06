@@ -53,7 +53,7 @@ if (isset($_POST['update_storage'])) {
         $conn->commit();
         
         $_SESSION['success_message'] = "Cold storage updated successfully!";
-        header("Location: dashboard.php");
+        header("Location: dashboard-template.php");
         exit();
     } catch (Exception $e) {
         // Rollback transaction on error
@@ -134,7 +134,7 @@ if (isset($_POST['update_storage'])) {
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3 class="mb-0">Edit Cold Storage</h3>
-                        <a href="dashboard.php" class="btn btn-outline-secondary btn-sm">
+                        <a href="dashboard-template.php" class="btn btn-outline-secondary btn-sm">
                             <i class="bi bi-arrow-left"></i> Back to Dashboard
                         </a>
                     </div>
@@ -181,7 +181,7 @@ if (isset($_POST['update_storage'])) {
                                 </div>
                                 
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                    <a href="dashboard.php" class="btn btn-secondary">Cancel</a>
+                                    <a href="dashboard-template.php" class="btn btn-secondary">Cancel</a>
                                     <button type="submit" name="update_storage" class="btn btn-primary">Update Storage</button>
                                 </div>
                             </form>

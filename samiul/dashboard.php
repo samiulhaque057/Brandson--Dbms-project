@@ -280,7 +280,7 @@ if (!isset($inventory)) {
                     <!-- Overview Chart -->
                     <div class="chart-card overview-chart">
                         <div class="chart-header">
-                            <h3>Overview</h3>
+                            <h3>Sales chart</h3>
                             <div class="chart-controls">
                                 <div class="chart-legend">
                                     <span class="legend-item"><span class="legend-color purple"></span>Beef</span>
@@ -694,44 +694,6 @@ function deleteStock() {
 
 
 
-
-                 <!-- Post-Harvest Loss Recording -->
-                 <div class="card">
-                        <div class="card-header">
-                            <h2 class="card-title">Post-Harvest Loss Recording</h2>
-                            <button class="btn-outline">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
-                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                    <circle cx="12" cy="12" r="3"></circle>
-                                </svg>
-                                View Reports
-                            </button>
-                        </div>
-                        <div class="card-content">
-                            <div class="loss-grid">
-                                <?php foreach ($lossData as $item): ?>
-                                <div class="loss-card">
-                                    <div class="loss-info">
-                                        <h3><?= $item['type'] ?></h3>
-                                        <div class="loss-meta">
-                                            <span class="badge outline"><?= $item['batch'] ?></span>
-                                            <span class="date"><?= $item['date'] ?></span>
-                                        </div>
-                                    </div>
-                                    <div class="loss-percentage">
-                                        <div class="percentage"><?= $item['lossPercentage'] ?>%</div>
-                                        <div class="label">Loss</div>
-                                    </div>
-                                </div>
-                                <?php endforeach; ?>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                </div>
-            </div>
-
-            
 
 
         </main>
